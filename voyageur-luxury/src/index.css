@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Jost:wght@300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #1c1917;
+  --color-secondary: #44403c;
+  --color-cta: #ca8a04;
+  --color-background: #fafaf9;
+  --color-text: #0c0a09;
+}
+
+body {
+  @apply font-body bg-imperial-black text-white selection:bg-imperial-gold/30;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-heading text-imperial-gold tracking-tight;
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+}
+
+.gold-glow {
+  box-shadow: 0 0 20px rgba(201, 163, 79, 0.2);
+}
+
+.btn-imperial {
+  @apply relative overflow-hidden px-8 py-3 rounded-lg bg-imperial-gold text-imperial-black font-bold transition-all duration-300 hover:scale-105 active:scale-95 gold-glow;
+}
+
+.btn-imperial::after {
+  content: "";
+  @apply absolute inset-0 bg-white/20 translate-x-[-100%] transition-transform duration-500 skew-x-12;
+}
+
+.btn-imperial:hover::after {
+  @apply translate-x-[100%];
+}

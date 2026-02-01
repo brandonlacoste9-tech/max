@@ -1,0 +1,41 @@
+{
+  "agent": {
+    "model": "anthropic/claude-opus-4-5",
+    "name": "Max",
+    "description": "Your personal AI operating system"
+  },
+  "gateway": {
+    "port": 18789,
+    "bind": "loopback",
+    "verbose": true
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "~/.openclaw/workspace",
+      "sandbox": {
+        "mode": "non-main"
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "enabled": true
+    },
+    "telegram": {
+      "enabled": true
+    },
+    "discord": {
+      "enabled": true
+    }
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true
+      }
+    }
+  },
+  "security": {
+    "dmPolicy": "pairing"
+  }
+}

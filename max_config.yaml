@@ -1,0 +1,51 @@
+# 🏛️ MAXIMUS SOVEREIGN CONFIGURATION
+# Using YOUR existing Ollama models + new downloads
+
+model_list:
+  # ═══════════════════════════════════════════════════════════
+  # TIER 1: REFLEX - Fast Responses (Gemma 3 4B - YOU HAVE THIS!)
+  # ═══════════════════════════════════════════════════════════
+  - model_name: maximus-reflex
+    litellm_params:
+      model: ollama/gemma3:4b
+      api_base: http://localhost:11434
+      temperature: 0.8
+      max_tokens: 2048
+
+  # ═══════════════════════════════════════════════════════════
+  # TIER 2: LOGIC - Complex Reasoning (Llama 3.1 8B - YOU HAVE THIS!)
+  # ═══════════════════════════════════════════════════════════
+  - model_name: maximus-logic
+    litellm_params:
+      model: ollama/llama3.1:8b
+      api_base: http://localhost:11434
+      temperature: 0.3
+      max_tokens: 4096
+
+  # ═══════════════════════════════════════════════════════════
+  # TIER 3: WORKER - Code Generation (Qwen 2.5 7B - DOWNLOADING)
+  # ═══════════════════════════════════════════════════════════
+  - model_name: maximus-worker
+    litellm_params:
+      model: ollama/qwen2.5:7b
+      api_base: http://localhost:11434
+      temperature: 0.2
+      max_tokens: 8192
+
+  # ═══════════════════════════════════════════════════════════
+  # TIER 4: VISION - Image Understanding (LLaVA - WILL DOWNLOAD)
+  # ═══════════════════════════════════════════════════════════
+  - model_name: maximus-vision
+    litellm_params:
+      model: ollama/llava:7b
+      api_base: http://localhost:11434
+      temperature: 0.5
+      max_tokens: 2048
+
+router_settings:
+  routing_strategy: simple-shuffle
+  num_retries: 2
+  timeout: 30
+  fallbacks:
+    - maximus-logic: [maximus-reflex]
+    - maximus-worker: [maximus-logic, maximus-reflex]

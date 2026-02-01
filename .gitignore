@@ -1,0 +1,13 @@
+.env
+node_modules/
+dist/
+*.log
+test_*.py
+create_table*.py
+scout_bee_leads.py
+planning-with-files/
+findings.md
+progress.md
+task_plan.md
+.gemini/
+.agent/

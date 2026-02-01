@@ -1,0 +1,47 @@
+{
+  "theme": {
+    "name": "Imperial",
+    "description": "Tesla for Business - Red, Gold, and White",
+    "colors": {
+      "primary": {
+        "red": "#8B0000",
+        "gold": "#C9A34F",
+        "white": "#F8F2E8"
+      },
+      "effects": {
+        "shadow": "rgba(139, 0, 0, 0.3)",
+        "glow": "rgba(201, 163, 79, 0.5)",
+        "overlay": "rgba(0, 0, 0, 0.1)"
+      },
+      "gradients": {
+        "primary": "linear-gradient(135deg, #8B0000 0%, #5C0000 100%)",
+        "gold": "linear-gradient(135deg, #C9A34F 0%, #A68739 100%)",
+        "marble": "linear-gradient(135deg, #F8F2E8 0%, #E8DED0 100%)"
+      }
+    },
+    "typography": {
+      "heading": "Cinzel, serif",
+      "body": "Lato, sans-serif",
+      "accent": "Playfair Display, serif"
+    },
+    "elements": {
+      "logo": "3D spinning Fleur-de-lys shield",
+      "textures": ["leather", "marble", "gold-leaf"],
+      "animations": ["spin", "glow-pulse", "fade-in"]
+    }
+  },
+  "arsenal": {
+    "browser-use": "c:\\Users\\north\\max\\browser-use",
+    "antigravity-awesome-skills": "c:\\Users\\north\\max\\antigravity-awesome-skills",
+    "planning-with-files": "c:\\Users\\north\\max\\planning-with-files",
+    "Antigravity-Manager": "c:\\Users\\north\\max\\Antigravity-Manager",
+    "ui-ux-pro-max-skill": "c:\\Users\\north\\max\\ui-ux-pro-max-skill",
+    "antigravity-workspace-template": "c:\\Users\\north\\max\\antigravity-workspace-template"
+  },
+  "mission": {
+    "priority": "ui-ux-pro-max-skill",
+    "objective": "Build Imperial theme dashboard with Gladiator sidebar",
+    "vault": "/vault directory for BYOK storage",
+    "trial": "1-hour trial logic implementation"
+  }
+}
