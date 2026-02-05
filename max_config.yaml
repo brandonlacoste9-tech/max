@@ -1,13 +1,16 @@
 # 🏛️ MAXIMUS SOVEREIGN CONFIGURATION
 # Using YOUR existing Ollama models + new downloads
 
+litellm_settings:
+  callbacks: ["custom_prompt.imperial_injector"]
+
 model_list:
   # ═══════════════════════════════════════════════════════════
   # TIER 1: REFLEX - Fast Responses (Gemma 3 4B - YOU HAVE THIS!)
   # ═══════════════════════════════════════════════════════════
   - model_name: maximus-reflex
     litellm_params:
-      model: ollama/gemma3:4b
+      model: ollama/gemma2:2b
       api_base: http://localhost:11434
       temperature: 0.8
       max_tokens: 2048

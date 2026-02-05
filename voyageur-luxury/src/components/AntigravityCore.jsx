@@ -1,158 +1,242 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, Zap, Activity, Shield, Search, Database } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { Cpu, Zap, Activity, Shield, Database, Crosshair, ArrowUpRight } from 'lucide-react';
 
-const AntigravityCore = () => {
-    const [status, setStatus] = useState('active');
-    const [leads, setLeads] = useState([
-        { id: 1, name: "Pure Plomberie inc.", phone: "514-xxx-xxxx", rating: 4.7, status: "INDEXED" },
-        { id: 2, name: "Precision Plumbing", phone: "(514) 209-3489", rating: 4.9, status: "INDEXED" },
-        { id: 3, name: "Plomberie EAU MEGA", phone: "(514) 813-0032", rating: 4.9, status: "INDEXED" }
-    ]);
+// --- IMPERIAL UTILS ---
+const generateLead = (id) => {
+    const names = ["Toiture Elite", "Plomberie Royal", "Electro-Volt QC", "Construction 360", "Design V"];
+    const phones = ["514", "450", "438"];
+    return {
+        id: Date.now() + Math.random(),
+        name: names[Math.floor(Math.random() * names.length)],
+        phone: `(${phones[Math.floor(Math.random() * phones.length)]}) ${Math.floor(Math.random() * 899) + 100}-${Math.floor(Math.random() * 8999) + 1000}`,
+        rating: (4.5 + Math.random() * 0.5).toFixed(1),
+        status: Math.random() > 0.7 ? "GOLD TIER" : "INDEXED",
+        value: Math.floor(Math.random() * 10000)
+    };
+};
 
+// --- PHYSICS COMPONENT: THE GRAVITY WELL ---
+const ZeroGItem = ({ lead, index }) => {
+    // Randomized float parameters for "Organic Drift"
+    const randomDuration = 3 + Math.random() * 2;
+    const randomY = 5 + Math.random() * 10;
+    
     return (
-        <div className="mt-40 max-w-7xl mx-auto px-8">
-            <div className="flex items-center gap-6 mb-12">
-                <div className="relative">
-                    <motion.div 
-                        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="absolute inset-0 bg-[#C9A34F] rounded-full blur-xl"
-                    />
-                    <div className="relative glass-card p-4 bg-black/40 border-[#C9A34F]">
-                        <Cpu className="w-10 h-10 text-[#C9A34F]" />
-                    </div>
+        <motion.div 
+            layout
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ 
+                opacity: 1, 
+                y: 0, 
+                scale: 1,
+                // The "Float" Effect - Subtle breathing motion
+                y: [0, -randomY, 0],
+            }}
+            exit={{ opacity: 0, scale: 0.8, x: -50 }}
+            transition={{ 
+                layout: { type: "spring", stiffness: 300, damping: 30 },
+                y: { duration: randomDuration, repeat: Infinity, ease: "easeInOut" }
+            }}
+            whileHover={{ 
+                scale: 1.05, 
+                y: -10,
+                boxShadow: "0px 10px 30px -10px rgba(201,163,79,0.3)",
+                zIndex: 10
+            }}
+            className={`
+                group relative flex items-center justify-between p-4 mb-3 
+                backdrop-blur-md border transition-colors cursor-crosshair
+                ${lead.status === "GOLD TIER" 
+                    ? "bg-[#C9A34F]/10 border-[#C9A34F]/50 shadow-[0_0_15px_rgba(201,163,79,0.1)]" 
+                    : "bg-white/5 border-white/5 hover:border-[#C9A34F]/30"}
+            `}
+        >
+            {/* Lead Data */}
+            <div className="flex items-center gap-4">
+                <div className={`
+                    w-10 h-10 flex items-center justify-center font-black text-xs rounded-sm
+                    ${lead.status === "GOLD TIER" ? "bg-[#C9A34F] text-black" : "bg-white/10 text-white/50"}
+                `}>
+                    {index + 1}
                 </div>
                 <div>
-                    <h2 className="text-4xl font-heading font-bold text-white tracking-tighter uppercase">
-                        ANTIGRAVITY <span className="text-[#C9A34F]">CORE</span>
-                    </h2>
-                    <div className="flex items-center gap-2 mt-1">
-                        <Activity className="w-3 h-3 text-green-500 animate-pulse" />
-                        <span className="text-[10px] text-green-500 font-black uppercase tracking-widest">Assistant Maximus : EN LIGNE</span>
+                    <div className="text-sm font-bold text-white group-hover:text-[#C9A34F] transition-colors">
+                        {lead.name}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] text-white/30 font-medium tracking-widest uppercase">
+                            {lead.phone}
+                        </span>
+                        {lead.status === "GOLD TIER" && (
+                            <span className="text-[8px] bg-[#C9A34F] text-black px-1 font-black rounded-sm">VIP</span>
+                        )}
                     </div>
                 </div>
             </div>
 
+            {/* Action Side */}
+            <div className="flex items-center gap-4">
+                <div className="text-right">
+                    <div className="text-xs font-black text-[#C9A34F]">{lead.rating} ⭐</div>
+                    <div className="text-[8px] text-green-500 font-bold tracking-tighter animate-pulse">LIVE</div>
+                </div>
+                <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2 hover:bg-[#C9A34F] hover:text-black text-[#C9A34F] rounded-full transition-colors"
+                >
+                    <ArrowUpRight className="w-4 h-4" />
+                </motion.button>
+            </div>
+            
+            {/* Corner Accent for "Tech" feel */}
+            <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#C9A34F]/30" />
+            <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-[#C9A34F]/30" />
+        </motion.div>
+    );
+};
+
+const AntigravityCore = () => {
+    // The "Live Feed" State
+    const [leads, setLeads] = useState([
+        { id: 1, name: "Souverain Construction", phone: "514-000-0001", rating: 5.0, status: "GOLD TIER" },
+        { id: 2, name: "Voyageur Transport", phone: "450-555-0199", rating: 4.8, status: "INDEXED" },
+        { id: 3, name: "Imperial Tech", phone: "438-999-8888", rating: 4.9, status: "GOLD TIER" }
+    ]);
+
+    const [isScanning, setIsScanning] = useState(true);
+    const scrollRef = useRef(null);
+
+    // LIVE INJECTOR: Simulates incoming data stream (The "Feed")
+    useEffect(() => {
+        if (!isScanning) return;
+
+        const interval = setInterval(() => {
+            setLeads(prev => {
+                const newLead = generateLead();
+                // Keep only last 5 items to maintain "Luxury" density (Anti-Clutter)
+                const newFeed = [newLead, ...prev].slice(0, 5);
+                return newFeed;
+            });
+        }, 3500); // New lead every 3.5s
+
+        return () => clearInterval(interval);
+    }, [isScanning]);
+
+    return (
+        <div className="mt-40 max-w-7xl mx-auto px-8">
+            {/* HEADER: CONTROL DECK */}
+            <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center gap-6">
+                    <div className="relative">
+                        <motion.div 
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-0 border border-dashed border-[#C9A34F]/30 rounded-full"
+                        />
+                        <div className="relative glass-card p-4 bg-black/40 border-[#C9A34F] shadow-[0_0_30px_rgba(201,163,79,0.2)]">
+                            <Cpu className="w-10 h-10 text-[#C9A34F]" />
+                        </div>
+                    </div>
+                    <div>
+                        <h2 className="text-4xl font-heading font-bold text-white tracking-tighter uppercase">
+                            ANTIGRAVITY <span className="text-[#C9A34F]">CORE</span>
+                        </h2>
+                        <div className="flex items-center gap-2 mt-1">
+                            <Activity className="w-3 h-3 text-green-500 animate-pulse" />
+                            <span className="text-[10px] text-green-500 font-black uppercase tracking-widest">
+                                Physics Engine: <span className="text-white">ACTIVE (v2.0)</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* MANUAL OVERRIDE SWITCH */}
+                <button 
+                    onClick={() => setIsScanning(!isScanning)}
+                    className={`
+                        px-6 py-3 font-bold text-xs uppercase tracking-widest border transition-all
+                        ${isScanning 
+                            ? "bg-[#C9A34F]/10 border-[#C9A34F] text-[#C9A34F]" 
+                            : "bg-red-500/10 border-red-500 text-red-500"}
+                    `}
+                >
+                    {isScanning ? "STOP SCAN" : "RESUME FEED"}
+                </button>
+            </div>
+
             <div className="grid lg:grid-cols-3 gap-8">
-                {/* Status Panel */}
+                {/* LEFT: SYSTEM METRICS (The Brain) */}
                 <div className="lg:col-span-1 flex flex-col gap-8">
                     <div className="glass-card p-8 border-white/5 bg-white/5 relative overflow-hidden flex-1">
                         <div className="absolute top-0 right-0 p-4">
-                            <Shield className="w-12 h-12 text-[#C9A34F] opacity-10" />
+                            <Shield className="w-12 h-12 text-[#C9A34F] opacity-10 animate-pulse" />
                         </div>
-                        <h3 className="text-[#C9A34F] font-black uppercase tracking-[0.2em] text-xs mb-6">Système de Bord</h3>
+                        <h3 className="text-[#C9A34F] font-black uppercase tracking-[0.2em] text-xs mb-6">Paramètres Physiques</h3>
                         
                         <div className="space-y-6">
                             <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                                <span className="text-white/40 text-[10px] uppercase font-bold">Modèle Principal</span>
-                                <span className="text-xs font-black text-white tracking-widest">Gemini 2.5 Pro (FloGuru)</span>
+                                <span className="text-white/40 text-[10px] uppercase font-bold">Gravity Constant</span>
+                                <span className="text-xs font-black text-white tracking-widest">-9.8 m/s² (INVERTED)</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                                <span className="text-white/40 text-[10px] uppercase font-bold">Mémoire Vectorielle</span>
-                                <span className="text-xs font-black text-[#C9A34F] tracking-widest underline decoration-dotted">LanceDB (Sovereign)</span>
+                                <span className="text-white/40 text-[10px] uppercase font-bold">Density Limit</span>
+                                <span className="text-xs font-black text-[#C9A34F] tracking-widest">5 UNITS (LUXURY)</span>
                             </div>
                             <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                                <span className="text-white/40 text-[10px] uppercase font-bold">Observabilité</span>
-                                <span className="text-xs font-black text-white tracking-widest">Arize Tracing</span>
+                                <span className="text-white/40 text-[10px] uppercase font-bold">Lead Velocity</span>
+                                <div className="flex items-center gap-2">
+                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-ping" />
+                                    <span className="text-xs font-black text-white tracking-widest">HIGH</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="mt-8 p-4 bg-black/40 border border-[#8B0000]/30 border-l-4 border-l-[#8B0000]">
-                            <p className="text-[10px] text-white/60 font-medium italic underline decoration-red-500/30">
-                                "Le Cheval de Troie est en place. 50,000 cibles québécoises en cours d'indexation."
+                        <div className="mt-8 p-4 bg-black/40 border border-[#C9A34F]/30 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-[#C9A34F]/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
+                            <p className="text-[10px] text-white/60 font-medium italic relative z-10">
+                                "Visual Engine running in `Float` mode. High-value assets are prioritizing Z-Index."
                             </p>
-                        </div>
-                    </div>
-
-                    {/* Scrolling Log Terminal */}
-                    <div className="glass-card p-4 bg-black border-white/5 font-mono text-[9px] h-40 overflow-hidden relative">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none z-10" />
-                        <div className="text-[#C9A34F] opacity-50 space-y-1 animate-scroll-text">
-                            <div>[SYS] FloGuru Sovereign Agent v1.0 Initialized...</div>
-                            <div>[NET] Handshake with LanceDB Cloud: SUCCESS</div>
-                            <div>[AI] Loading Imperial Decision Matrix...</div>
-                            <div>[SWARM] Scout Bee dispatched to Google Maps Montreal</div>
-                            <div>[SQL] SELECT * FROM leads WHERE niche='plumbing'</div>
-                            <div>[MEM] Ingesting 5 record batches into my_table3</div>
-                            <div>[SEC] Encryption layer secure (AES-256)</div>
-                            <div>[UI] Rendering Imperial Red & Gold interfaces</div>
-                            <div>[INFO] Quebec Business Registry sync: 41% complete</div>
-                            <div>[WARN] High-frequency queries detected (Scout Bee)</div>
-                            <div>[SUCCESS] Trojan Horse deployed successfully</div>
                         </div>
                     </div>
                 </div>
 
-                {/* Real-time Feed */}
-                <div className="lg:col-span-2 glass-card p-8 border-white/5 bg-black/40 relative overflow-hidden">
-                    <div className="flex items-center justify-between mb-8">
+                {/* RIGHT: THE GLASS WALL (The Feed) */}
+                <div className="lg:col-span-2 glass-card p-8 border-white/5 bg-black/40 relative overflow-hidden min-h-[500px]">
+                    {/* Feed Header */}
+                    <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
                         <div className="flex items-center gap-3">
                             <Database className="w-5 h-5 text-[#C9A34F]" />
-                            <h3 className="text-white font-black uppercase tracking-[0.2em] text-xs underline decoration-[#C9A34F]">Dernières Extractions (Scout Bee)</h3>
+                            <h3 className="text-white font-black uppercase tracking-[0.2em] text-xs">
+                                Live Extraction Feed
+                            </h3>
                         </div>
-                        <motion.div 
-                            animate={{ opacity: [1, 0.4, 1] }} 
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                            className="text-[10px] text-white/30 font-bold"
-                        >
-                            SYNC LIVE...
-                        </motion.div>
+                        <div className="text-[10px] text-white/30 font-bold flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-[#C9A34F] rounded-full animate-pulse" />
+                            REALTIME
+                        </div>
                     </div>
 
-                    <div className="grid gap-4">
-                        {leads.map((lead, i) => (
-                            <motion.div 
-                                key={lead.id}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                className="group flex items-center justify-between p-4 bg-white/5 border border-white/5 hover:border-[#C9A34F]/30 transition-all cursor-crosshair"
-                            >
-                                <div className="flex items-center gap-6">
-                                    <div className="w-10 h-10 flex items-center justify-center font-black text-[#C9A34F] glass-card text-xs">
-                                        0{i+1}
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-bold text-white group-hover:text-[#C9A34F] transition-colors">{lead.name}</div>
-                                        <div className="text-[10px] text-white/30 font-medium tracking-widest uppercase">{lead.phone}</div>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-6">
-                                    <div className="text-right">
-                                        <div className="text-xs font-black text-[#C9A34F]">{lead.rating} ⭐</div>
-                                        <div className="text-[8px] text-green-500 font-bold tracking-tighter">{lead.status}</div>
-                                    </div>
-                                    <Zap className="w-4 h-4 text-[#C9A34F] opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    <div className="mt-8 flex justify-between items-center text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">
-                        <span>Capacité de Scan : 50,000 / jour</span>
-                        <div className="flex gap-2">
-                             <div className="w-1.5 h-1.5 bg-[#C9A34F] rounded-full animate-ping"></div>
-                             <span>Signal Maximus Stable</span>
-                        </div>
+                    {/* THE PHYSICS CONTAINER */}
+                    <div className="relative">
+                        <AnimatePresence mode="popLayout">
+                            {leads.map((lead, i) => (
+                                <ZeroGItem key={lead.id} lead={lead} index={i} />
+                            ))}
+                        </AnimatePresence>
+                        
+                        {/* Empty State / Loading */}
+                        {leads.length === 0 && (
+                            <div className="text-center py-20 text-white/20 text-xs uppercase tracking-widest animate-pulse">
+                                Scanning Frequency...
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
 
             <style>{`
-                .animate-scroll-text {
-                    animation: scroll-text 20s linear infinite;
-                }
-                @keyframes scroll-text {
-                    0% { transform: translateY(0); }
-                    100% { transform: translateY(-100%); }
-                }
-                .cursor-crosshair {
-                    cursor: crosshair;
-                }
-                .gold-glow {
-                    box-shadow: 0 0 20px rgba(201,163,79,0.1);
-                }
+                .cursor-crosshair { cursor: crosshair; }
             `}</style>
         </div>
     );

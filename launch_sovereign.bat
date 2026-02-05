@@ -1,4 +1,5 @@
 @echo off
+set PYTHONUTF8=1
 REM ═══════════════════════════════════════════════════════════════
 REM  🏛️ MAXIMUS SOVEREIGN LAUNCHER
 REM  The Smart Power Stack - Local-First AI Empire
@@ -13,6 +14,25 @@ echo ═════════════════════════
 echo  🏛️ MAXIMUS SOVEREIGN LAUNCHER
 echo  Building the Empire... One Service at a Time
 echo ═══════════════════════════════════════════════════════════════
+echo.
+
+REM ───────────────────────────────────────────────────────────────
+REM  STEP 0: Virtual Environment Check
+REM ───────────────────────────────────────────────────────────────
+echo [0/6] Configuring environment...
+
+if not exist ".venv\Scripts\python.exe" (
+    echo ❌ ERROR: Virtual environment not found!
+    echo    Please run: py -3.12 -m venv .venv
+    pause
+    exit /b 1
+)
+
+REM Set path to include venv scripts for this session
+set "PATH=%CD%\.venv\Scripts;%PATH%"
+set "PATH=%PATH%;C:\Users\north\AppData\Local\Programs\Ollama"
+
+echo ✅ Using local environment (.venv)
 echo.
 
 REM ───────────────────────────────────────────────────────────────
@@ -32,22 +52,20 @@ if %errorlevel% neq 0 (
 )
 echo ✅ Ollama found
 
-REM Check if Python is installed
-where python >nul 2>&1
+REM Check if Python is installed (via venv)
+python --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ ERROR: Python not found!
-    echo.
-    echo Please install Python 3.10+ from: https://python.org
+    echo ❌ ERROR: Python environment broken!
     pause
     exit /b 1
 )
-echo ✅ Python found
+echo ✅ Python (venv) ready
 
 REM Check if NVIDIA GPU is available
 nvidia-smi >nul 2>&1
 if %errorlevel% neq 0 (
     echo ⚠️  WARNING: NVIDIA GPU not detected!
-    echo    Max will run on CPU (slower performance)
+    echo    Max will run on CPU ^(slower performance^)
     timeout /t 3 >nul
 ) else (
     echo ✅ RTX 4090 detected
@@ -67,7 +85,7 @@ if %errorlevel% equ 0 (
     echo ✅ Ollama already running
 ) else (
     echo 🚀 Starting Ollama...
-    start /B ollama serve
+    start "Ollama Server" ollama serve
     timeout /t 5 >nul
     echo ✅ Ollama started on port 11434
 )
@@ -81,30 +99,24 @@ REM ─────────────────────────�
 echo [3/6] Ensuring models are available...
 
 REM Check and pull Gemma 3 (Reflex)
-ollama list | findstr "gemma3:4b" >nul 2>&1
-if %errorlevel% neq 0 (
-    echo 📥 Pulling Gemma 3 (4B) - The Buddy...
+echo Checking Gemma 3...
+ollama list | findstr "gemma3:4b" >nul || (
+    echo 📥 Pulling Gemma 3...
     ollama pull gemma3:4b
-) else (
-    echo ✅ Gemma 3 (4B) ready
 )
 
 REM Check and pull Llama 3.1 (Logic)
-ollama list | findstr "llama3.1:8b" >nul 2>&1
-if %errorlevel% neq 0 (
-    echo 📥 Pulling Llama 3.1 (8B) - The Planner...
+echo Checking Llama 3.1...
+ollama list | findstr "llama3.1:8b" >nul || (
+    echo 📥 Pulling Llama 3.1...
     ollama pull llama3.1:8b
-) else (
-    echo ✅ Llama 3.1 (8B) ready
 )
 
 REM Check and pull Qwen 2.5 Coder (Worker)
-ollama list | findstr "qwen2.5-coder:7b" >nul 2>&1
-if %errorlevel% neq 0 (
-    echo 📥 Pulling Qwen 2.5 Coder (7B) - The Scout...
+echo Checking Qwen 2.5 Coder...
+ollama list | findstr "qwen2.5-coder:7b" >nul || (
+    echo 📥 Pulling Qwen 2.5 Coder...
     ollama pull qwen2.5-coder:7b
-) else (
-    echo ✅ Qwen 2.5 Coder (7B) ready
 )
 
 echo.
@@ -122,7 +134,7 @@ if %errorlevel% equ 0 (
 ) else (
     echo 🚀 Starting V-JEPA 2 Eyes...
     cd /d "c:\Users\north\max"
-    start /B python vjepa_service.py
+    start "Maximus Vision" python vjepa_service.py
     timeout /t 5 >nul
     
     REM Verify it started
@@ -143,17 +155,10 @@ REM ─────────────────────────�
 
 echo [5/6] Starting LiteLLM Smart Router...
 
-REM Check if LiteLLM is installed
-pip show litellm >nul 2>&1
-if %errorlevel% neq 0 (
-    echo 📥 Installing LiteLLM...
-    pip install litellm
-)
-
 REM Start LiteLLM proxy with config
 echo 🚀 Starting LiteLLM Proxy...
-cd /d "c:\Users\north\max"
-start /B litellm --config max_config.yaml --port 4000
+REM Running from current dir so custom_prompt.py is found
+start "Maximus Router" python run_litellm.py --config max_config.yaml --port 4000
 
 timeout /t 5 >nul
 
