@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "floguru"
+version = "0.1.0"
+description = "FloGuru — AI-powered automation platform with smart Guru agents"
+requires-python = ">=3.10"
+dependencies = [
+    "floguru-shared",
+    "floguru-gurus",
+    "floguru-browser",
+    "floguru-healing",
+    "floguru-chat",
+    "floguru-api",
+]
+
+[project.scripts]
+floguru = "floguru:main"
+
+[tool.setuptools]
+packages = []
