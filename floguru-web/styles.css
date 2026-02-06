@@ -1,0 +1,47 @@
+/* FloGuru Landing Page — Custom Styles */
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #09090B;
+}
+::-webkit-scrollbar-thumb {
+    background: #27272A;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3F3F46;
+}
+
+/* Selection */
+::selection {
+    background: rgba(201, 163, 79, 0.3);
+    color: white;
+}
+
+/* Feature cards stagger on hover */
+.feature-card {
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Smooth section links */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+}
+
+/* Mobile nav tweaks */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.75rem !important;
+        line-height: 1 !important;
+    }
+    h2 {
+        font-size: 2rem !important;
+    }
+}

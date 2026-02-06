@@ -6,6 +6,7 @@ import {
 import { CopilotSidebar } from "@copilotkit/react-ui";
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import AntigravityCore from './components/AntigravityCore';
+import GuruDashboard from './components/floguru/GuruDashboard';
 
 const App = () => {
   const [isEnglish, setIsEnglish] = useState(false);
@@ -204,6 +205,9 @@ const App = () => {
 
         {/* The Antigravity Intelligence Hub */}
         <AntigravityCore />
+
+        {/* FloGuru Command Center */}
+        <GuruDashboard />
 
         {/* $47 Sovereign Key Section */}
         <div className="mt-60 text-center">
