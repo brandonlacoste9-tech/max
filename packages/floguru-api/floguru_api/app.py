@@ -16,7 +16,8 @@ from floguru_gurus.router import GuruRouter
 from floguru_healing.healer import HyperHealer
 from floguru_healing.memory import ExecutionMemory
 
-from floguru_api.routes import tasks, gurus, health, webhooks
+from floguru_api.routes import tasks, gurus, health, webhooks, human_loop
+from floguru_api.middleware.rate_limit import RateLimitMiddleware
 
 
 def create_app() -> FastAPI:
@@ -52,10 +53,12 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    app.add_middleware(RateLimitMiddleware, rpm=60, burst=10)
 
     app.include_router(health.router, prefix="/api", tags=["health"])
     app.include_router(tasks.router, prefix="/api", tags=["tasks"])
     app.include_router(gurus.router, prefix="/api", tags=["gurus"])
     app.include_router(webhooks.router, prefix="/api", tags=["webhooks"])
+    app.include_router(human_loop.router, prefix="/api", tags=["human-in-the-loop"])
 
     return app

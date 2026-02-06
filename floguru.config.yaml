@@ -1,0 +1,88 @@
+# ============================================================
+# FloGuru Platform — Centralized Configuration
+# ============================================================
+
+platform:
+  name: FloGuru
+  version: "0.1.0"
+  environment: development   # development | staging | production
+
+server:
+  host: "0.0.0.0"
+  port: 8420
+  workers: 1
+  cors_origins: ["*"]
+
+# ---------- Guru Agent Definitions ----------
+gurus:
+  reasoner:
+    name: Reasoner
+    tier: logic
+    model: deepseek/deepseek-reasoner
+    temperature: 0.7
+    max_tokens: 4096
+    system_prompt: >
+      You are a Reasoning Guru — an expert analyst.
+      Think step-by-step, show your reasoning chain, and provide a clear conclusion.
+
+  coder:
+    name: Coder
+    tier: worker
+    model: gemini/gemini-2.5-pro
+    temperature: 0.3
+    max_tokens: 8192
+    system_prompt: >
+      You are a Coder Guru — an expert software engineer.
+      Write clean, well-structured code following the language's idioms and best practices.
+
+  browser:
+    name: Browser
+    tier: worker
+    model: gemini/gemini-2.5-pro
+    headless: true
+
+# ---------- Routing ----------
+routing:
+  default_tier: logic
+  keyword_matching: true
+  # Tasks with these tags bypass keyword detection
+  tag_overrides: true
+
+# ---------- HyperHealing ----------
+healing:
+  enabled: true
+  memory_path: .floguru/memory.jsonl
+  # Alert when success rate drops below this threshold
+  alert_threshold: 0.7
+  # Number of recent records to consider for diagnostics
+  window_size: 100
+
+# ---------- Chat Gateways ----------
+chat:
+  telegram:
+    enabled: false
+    # Token sourced from TELEGRAM_TOKEN env var
+    polling: true
+
+  discord:
+    enabled: false
+    # Token sourced from DISCORD_TOKEN env var
+
+  whatsapp:
+    enabled: false
+    # Token sourced from WHATSAPP_TOKEN env var
+    verify_token: floguru
+
+# ---------- Browser Automation ----------
+browser:
+  headless: true
+  viewport:
+    width: 1280
+    height: 720
+  default_timeout_ms: 30000
+
+# ---------- Rate Limiting ----------
+rate_limiting:
+  enabled: true
+  requests_per_minute: 60
+  burst: 10
