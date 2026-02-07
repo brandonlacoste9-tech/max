@@ -47,11 +47,16 @@ module.exports = {
         'typing-dot': 'typing-pulse 1.4s ease-in-out infinite both',
         'typing-dot-2': 'typing-pulse 1.4s ease-in-out 0.2s infinite both',
         'typing-dot-3': 'typing-pulse 1.4s ease-in-out 0.4s infinite both',
+        'max-active': 'max-active-pulse 2s ease-in-out infinite',
       },
       keyframes: {
         'typing-pulse': {
           '0%, 80%, 100%': { opacity: '0.4', transform: 'scale(0.8)' },
           '40%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'max-active-pulse': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.6' },
         },
       },
     },

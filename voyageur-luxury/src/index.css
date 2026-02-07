@@ -49,6 +49,17 @@ h6 {
   box-shadow: 0 0 20px rgba(201, 163, 79, 0.2);
 }
 
+/* Gold edge lighting — subtle rim glow around viewport.
+   Single top-level only; slight overshoot on blur/spread for edge rendering. */
+.gold-edge-lighting {
+  position: relative;
+  box-shadow:
+    inset 0 90px 160px -70px rgba(201, 163, 79, 0.14),
+    inset 0 -90px 160px -70px rgba(201, 163, 79, 0.14),
+    inset 90px 0 160px -70px rgba(201, 163, 79, 0.1),
+    inset -90px 0 160px -70px rgba(201, 163, 79, 0.1);
+}
+
 .btn-imperial {
   @apply relative overflow-hidden px-8 py-3 rounded-lg bg-imperial-gold text-imperial-black font-bold transition-all duration-300 hover:scale-105 active:scale-95 gold-glow;
 }
