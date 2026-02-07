@@ -72,7 +72,28 @@ cd voyageur-luxury && npm install && npm run dev
 
 # 4. Run HyperHealing diagnostics
 python floguru.py diagnose
+
+# 5. Run health suite (API must be running)
+python floguru.py health
 ```
+
+### Ask Max
+
+Ask Max is a conversational API and UI for quick status checks and demo flows. Use it from the fixed panel at the bottom-right of the Voyageur dashboard, or via REST:
+
+```bash
+# Status (HyperHealing diagnostics summary)
+curl -X POST http://localhost:8420/api/max -H "Content-Type: application/json" -d '{"message":"status"}'
+
+# Run demo flow (submits a safe Guru task)
+curl -X POST http://localhost:8420/api/max -H "Content-Type: application/json" -d '{"message":"run demo"}'
+
+# Check site health (status, title, H1)
+curl -X POST http://localhost:8420/api/max -H "Content-Type: application/json" -d '{"message":"check max-inky.vercel.app"}'
+curl -X POST http://localhost:8420/api/browser/check-site -H "Content-Type: application/json" -d '{"url":"https://max-inky.vercel.app"}'
+```
+
+Supported messages: `"status"` → diagnostics summary; `"run demo"` → runs the demo Guru task; `"check <url>"` → site health (status code, title, H1); `"help"` → list of commands.
 
 ### API Endpoints
 
@@ -82,6 +103,8 @@ python floguru.py diagnose
 | GET | `/api/gurus` | List registered Gurus |
 | GET | `/api/gurus/stats` | Per-guru execution statistics |
 | GET | `/api/diagnostics` | HyperHealing diagnosis report |
+| POST | `/api/max` | Natural language helper for status and demo tasks |
+| POST | `/api/browser/check-site` | Check a URL (status code, title, H1) |
 | POST | `/api/tasks` | Submit a task to the Guru router |
 | POST | `/api/tasks/batch` | Submit multiple tasks |
 | POST | `/api/webhook/whatsapp` | WhatsApp incoming webhook |

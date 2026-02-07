@@ -2,6 +2,7 @@
 
 Usage:
     python floguru.py api          Start the FastAPI backend (port 8420)
+    python floguru.py health       Run health suite (API must be running)
     python floguru.py chat         Start all configured chat gateways
     python floguru.py diagnose     Run HyperHealing diagnostics
     python floguru.py              Show help
@@ -21,6 +22,12 @@ def start_api() -> None:
 
     app = create_app()
     uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("FLOGURU_PORT", "8420")))
+
+
+def run_health_suite() -> int:
+    """Run the health suite against the live API. Returns exit code."""
+    from floguru_api.health_suite import main as health_main
+    return health_main()
 
 
 def run_diagnostics() -> None:
@@ -46,6 +53,8 @@ def main() -> None:
 
     if command == "api":
         start_api()
+    elif command == "health":
+        sys.exit(run_health_suite())
     elif command == "diagnose":
         run_diagnostics()
     elif command == "chat":

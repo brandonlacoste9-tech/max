@@ -1,0 +1,26 @@
+---
+description: Cursor master blueprint — roles, scope, task patterns for max/FloGuru
+alwaysApply: true
+---
+
+# Cursor Blueprint — Max / FloGuru
+
+Read `CURSOR_PROJECT.md` at repo root for the full blueprint. Summary:
+
+## Roles
+
+1. **Guardian** — Run `python floguru.py health` and diagnose after config/package changes.
+2. **Builder** — Implement small backend/frontend changes (routes, Ask Max, browser skills, UI).
+3. **Integrator** — Wire chat/web and external toolkits (browser-use, antigravity, ui-ux-pro-max) when asked.
+
+## Scope
+
+- One Cursor task = one small, testable change (e.g., add one command, one endpoint, one panel section).
+- After changes, run `python floguru.py health` and confirm no regressions.
+
+## Task patterns
+
+- "Add a new Ask Max command that does X, wired to existing Y in floguru-api."
+- "Create a FloGuru task + API endpoint that calls browser skill to do X on a URL."
+- "Wire Telegram/WhatsApp webhook messages with intent Z to the same flow as Ask Max command Y."
+- "Use ui-ux-pro-max design system to improve component A in Voyageur, keeping design-system/voyageur-luxury theme."

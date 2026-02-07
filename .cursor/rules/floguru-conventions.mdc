@@ -1,0 +1,43 @@
+---
+description: FloGuru standing rules — health checks, API consistency, UI coherence, new behavior
+globs: 
+  - packages/floguru-api/**/*
+  - packages/floguru-browser/**/*
+  - packages/floguru-chat/**/*
+  - packages/floguru-gurus/**/*
+  - packages/floguru-healing/**/*
+  - packages/floguru-shared/**/*
+  - voyageur-luxury/**/*
+  - floguru.config.yaml
+  - .env
+  - .env.example
+  - max-config.json
+alwaysApply: false
+---
+
+# FloGuru Conventions
+
+## Health checks
+
+- After any change in `packages/floguru-*`, `floguru.config.yaml`, `.env`, or `max-config.json`, run `python floguru.py health` and report any failing checks.
+- The API must be running for the health suite; if it is not, note that and run `python floguru.py diagnose` instead.
+
+## API consistency
+
+- Before changing routes in `floguru-api`, read the README.md API section and keep naming/paths consistent.
+- New endpoints should follow existing patterns: `/api/<resource>/<action>` or `/api/<resource>`.
+- Document new endpoints in README.md under "API Endpoints" and add a curl example where relevant.
+
+## UI coherence
+
+- Before changing Voyageur UI, scan `AskMaxPanel.jsx`, `GuruDashboard.jsx`, and `floguru-web` so UX stays coherent.
+- Use the design system in `design-system/voyageur-luxury/MASTER.md` (colors, typography, spacing).
+- Imperial theme: gold accent `#C9A34F`, dark bg, glass-card styles.
+
+## New behavior checklist
+
+When adding new behavior, always:
+
+1. Add or update an API endpoint or task.
+2. Expose it via Ask Max or a clear UI element.
+3. Add one example line in README or QUICKSTART.

@@ -7,6 +7,7 @@ import { CopilotSidebar } from "@copilotkit/react-ui";
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import AntigravityCore from './components/AntigravityCore';
 import GuruDashboard from './components/floguru/GuruDashboard';
+import AskMaxPanel from './components/floguru/AskMaxPanel';
 
 const App = () => {
   const [isEnglish, setIsEnglish] = useState(false);
@@ -16,6 +17,8 @@ const App = () => {
   const content = {
     qc: {
       heroTitle: "Ton Partenaire IA pour Faire Rouler Ton Business",
+      heroWow: "Dis-moi ce dont tu as besoin et je t'aide à planifier ta vie admin – listes d'épicerie, suivi des reçus, organisation des documents, préparation pour les impôts – le tout depuis les messageries et apps que tu utilises déjà.",
+      heroClarifier: "FloGuru t'aide à préparer et automatiser, mais tu gardes le contrôle pour les paiements et les soumissions officielles.",
       heroSub: "L'excellence impériale au service de ta croissance. Pas de niaisage, juste de la puissance.",
       btnStart: "Embarque!",
       btnTrial: "Essai Gratuit",
@@ -32,6 +35,8 @@ const App = () => {
     },
     en: {
       heroTitle: "Your AI Partner to Scale Your Business",
+      heroWow: "Tell me what you need and I'll help you plan your life admin – from drafting your grocery list and tracking receipts to organizing documents and preparing everything you need for taxes – all from the chats and apps you already use.",
+      heroClarifier: "FloGuru helps you prepare and automate, but you stay in control for payments and official submissions.",
       heroSub: "Imperial excellence at your service. No fluff, just pure power.",
       btnStart: "Claim Your Throne!",
       btnTrial: "Free Trial",
@@ -146,8 +151,11 @@ const App = () => {
                 </span>
               ))}
             </h1>
-            <p className="text-2xl text-white/40 mb-12 max-w-xl leading-relaxed font-body font-light italic">
-              "{t.heroSub}"
+            <p className="text-xl md:text-2xl text-white/70 mb-6 max-w-2xl leading-relaxed font-body">
+              {t.heroWow}
+            </p>
+            <p className="text-sm text-white/40 mb-12 max-w-xl font-body italic">
+              {t.heroClarifier}
             </p>
             <div className="flex flex-wrap gap-6">
               <button 
@@ -281,6 +289,9 @@ const App = () => {
             </div>
         </div>
       </main>
+
+      {/* Ask Max — fixed bottom-right chat */}
+      <AskMaxPanel />
 
       {/* Real Copilot Sidebar */}
       <CopilotSidebar
