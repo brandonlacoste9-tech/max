@@ -28,9 +28,7 @@ const ZeroGItem = ({ lead, index }) => {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ 
                 opacity: 1, 
-                y: 0, 
                 scale: 1,
-                // The "Float" Effect - Subtle breathing motion
                 y: [0, -randomY, 0],
             }}
             exit={{ opacity: 0, scale: 0.8, x: -50 }}

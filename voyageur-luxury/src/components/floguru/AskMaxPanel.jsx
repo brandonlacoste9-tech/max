@@ -1,30 +1,42 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Send, X, ChevronUp } from 'lucide-react';
 
 const API_BASE = '/api';
+const PANEL_ID = 'ask-max-panel';
+const INPUT_ID = 'ask-max-input';
 
+/**
+ * AskMaxPanel - AI chat panel (UI Pro Max AI-Native + frontend-developer standards)
+ * @see UI Pro Max: AI-Native UI (typing indicator, bubbles, minimal chrome)
+ * @see frontend-developer: a11y, responsive, semantic HTML
+ */
 const AskMaxPanel = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
-  const sendMessage = async () => {
+  useEffect(() => {
+    if (isOpen) inputRef.current?.focus({ preventScroll: true });
+  }, [isOpen]);
+
+  const sendMessage = useCallback(async () => {
     const text = input.trim();
     if (!text || sending) return;
 
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', text }]);
+    setMessages((prev) => [...prev, { role: 'user', text }]);
     setSending(true);
 
     try {
@@ -33,12 +45,10 @@ const AskMaxPanel = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
       });
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const reply = data.reply || 'No response.';
-      setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
+      setMessages((prev) => [...prev, { role: 'assistant', text: reply }]);
     } catch (err) {
       console.error('[AskMax]', err);
       const isNetworkError =
@@ -47,58 +57,100 @@ const AskMaxPanel = () => {
         err.message?.includes('Network');
       const friendlyMessage = isNetworkError
         ? 'Max is offline. Check the API server.'
-        : `Max is offline. Check the API server. (${err.message || 'Unknown error'})`;
-      setMessages(prev => [
-        ...prev,
-        { role: 'assistant', text: friendlyMessage },
-      ]);
+        : `Max is offline. (${err.message || 'Unknown error'})`;
+      setMessages((prev) => [...prev, { role: 'assistant', text: friendlyMessage }]);
     }
     setSending(false);
-  };
+  }, [input, sending]);
+
+  const closePanel = useCallback(() => setIsOpen(false), []);
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    },
+    [sendMessage]
+  );
+
+  // UI Pro Max: 3-dot typing indicator (AI-Native pattern)
+  const TypingIndicator = () => (
+    <div
+      className="flex justify-start"
+      role="status"
+      aria-live="polite"
+      aria-label="Max is thinking"
+    >
+      <div className="flex items-center gap-1.5 px-4 py-3 rounded-2xl bg-white/10 border border-white/10 text-white/70">
+        <span className="w-2 h-2 rounded-full bg-[#C9A34F] animate-typing-dot" />
+        <span className="w-2 h-2 rounded-full bg-[#C9A34F] animate-typing-dot-2" />
+        <span className="w-2 h-2 rounded-full bg-[#C9A34F] animate-typing-dot-3" />
+      </div>
+    </div>
+  );
+
+  const suggestedCommands = 'status, run demo, check max-inky.vercel.app, help';
 
   return (
     <>
-      {/* Floating toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-8 right-8 z-50 w-14 h-14 glass-card border-[#C9A34F] border-opacity-40 flex items-center justify-center text-[#C9A34F] hover:bg-[#C9A34F] hover:text-black transition-all gold-glow"
-        aria-label={isOpen ? 'Close Ask Max' : 'Open Ask Max'}
+        aria-expanded={isOpen}
+        aria-controls={PANEL_ID}
+        aria-label={isOpen ? 'Close Ask Max chat' : 'Open Ask Max chat'}
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 w-14 h-14 min-w-[44px] min-h-[44px] glass-card border-[#C9A34F]/40 flex items-center justify-center text-[#C9A34F] hover:bg-[#C9A34F] hover:text-black transition-colors duration-200 gold-glow cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A34F] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0A09]"
       >
-        {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
+        {isOpen ? <X className="w-6 h-6" aria-hidden /> : <MessageSquare className="w-6 h-6" aria-hidden />}
       </button>
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <motion.section
+            id={PANEL_ID}
+            role="region"
+            aria-label="Ask Max chat"
+            aria-busy={sending}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-8 z-40 w-[380px] max-h-[420px] glass-card border-[#C9A34F] border-opacity-30 flex flex-col overflow-hidden shadow-2xl"
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-8 sm:w-[380px] z-40 max-h-[min(420px,70vh)] glass-card border-[#C9A34F]/30 flex flex-col overflow-hidden shadow-elevation-4"
+            onKeyDown={(e) => e.key === 'Escape' && closePanel()}
           >
-            <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
-              <span className="font-heading font-bold text-[#C9A34F] uppercase tracking-wider flex items-center gap-2">
-                <ChevronUp className="w-4 h-4" />
+            <header className="px-4 py-3 border-b border-white/10 flex items-center justify-between shrink-0">
+              <h2 className="font-heading font-bold text-[#C9A34F] uppercase tracking-wider flex items-center gap-2 text-sm">
+                <ChevronUp className="w-4 h-4" aria-hidden />
                 Ask Max
-              </span>
-            </div>
+              </h2>
+            </header>
 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[200px] max-h-[280px]">
+            <div
+              className="flex-1 overflow-y-auto p-4 min-h-[200px] max-h-[280px] flex flex-col gap-4"
+              aria-live="polite"
+              aria-label="Chat messages"
+            >
               {messages.length === 0 && (
-                <p className="text-white/30 text-sm italic">
-                  Try: &quot;status&quot;, &quot;run demo&quot;, &quot;check max-inky.vercel.app&quot;, or &quot;help&quot;
+                <p
+                  id="ask-max-hint"
+                  className="text-white/30 text-sm italic"
+                >
+                  Try: &quot;{suggestedCommands}&quot;
                 </p>
               )}
               {messages.map((m, i) => (
                 <div
-                  key={i}
+                  key={`${m.role}-${i}-${m.text.slice(0, 20)}`}
                   className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] px-4 py-2 rounded-lg text-sm ${
+                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm transition-colors duration-200 ${
                       m.role === 'user'
                         ? 'bg-[#C9A34F] text-black'
-                        : 'bg-white/10 text-white/90 border border-white/10'
+                        : 'bg-white/10 text-white/90 border-l-2 border-[#C9A34F]/50'
                     }`}
+                    role={m.role === 'user' ? 'log' : 'article'}
                   >
                     <pre className="whitespace-pre-wrap font-sans text-inherit">
                       {m.text}
@@ -106,36 +158,43 @@ const AskMaxPanel = () => {
                   </div>
                 </div>
               ))}
-              {sending && (
-                <div className="flex justify-start">
-                  <div className="bg-white/10 text-white/50 px-4 py-2 rounded-lg text-sm italic">
-                    Max is thinking...
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
+              {sending && <TypingIndicator />}
+              <div ref={messagesEndRef} aria-hidden />
             </div>
 
-            <div className="p-4 border-t border-white/10 flex gap-2">
+            <form
+              onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
+              className="p-4 border-t border-white/10 flex gap-2 shrink-0"
+            >
+              <label htmlFor={INPUT_ID} className="sr-only">
+                Message for Max
+              </label>
               <input
+                ref={inputRef}
+                id={INPUT_ID}
                 type="text"
                 value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && sendMessage()}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
                 placeholder="Type a message..."
                 disabled={sending}
-                className="flex-1 bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/30 focus:border-[#C9A34F] focus:outline-none text-sm"
+                autoComplete="off"
+                aria-describedby={messages.length === 0 ? 'ask-max-hint' : undefined}
+                aria-label="Message for Max"
+                className="flex-1 h-12 min-h-[44px] bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-white/30 focus:border-[#C9A34F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A34F]/50 text-sm rounded-xl transition-colors duration-200"
               />
               <button
-                onClick={sendMessage}
+                type="submit"
+                onClick={(e) => { e.preventDefault(); sendMessage(); }}
                 disabled={sending || !input.trim()}
-                className="btn-imperial bg-[#C9A34F] text-black px-4 py-3 flex items-center gap-2 font-bold uppercase tracking-wider text-xs hover:bg-[#d4af5a] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Send message"
+                className="btn-imperial bg-[#C9A34F] text-black h-12 min-h-[44px] px-4 py-3 flex items-center justify-center gap-2 font-bold uppercase tracking-wider text-xs hover:bg-[#d4af5a] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A34F] focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 rounded-xl"
               >
-                <Send className="w-4 h-4" />
-                Send
+                <Send className="w-4 h-4" aria-hidden />
+                <span>Send</span>
               </button>
-            </div>
-          </motion.div>
+            </form>
+          </motion.section>
         )}
       </AnimatePresence>
     </>

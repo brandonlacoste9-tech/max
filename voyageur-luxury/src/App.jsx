@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Shield, Globe, MessageSquare, Zap, Search, Cpu, Crown, Star, Sparkles 
 } from 'lucide-react';
-import { CopilotSidebar } from "@copilotkit/react-ui";
-import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import AntigravityCore from './components/AntigravityCore';
 import GuruDashboard from './components/floguru/GuruDashboard';
 import AskMaxPanel from './components/floguru/AskMaxPanel';
@@ -55,23 +53,12 @@ const App = () => {
 
   const t = isEnglish ? content.en : content.qc;
 
-  // Copilot Integration
-  useCopilotReadable({
-    description: "The current language of the website",
-    value: isEnglish ? "English" : "Québécois",
-  });
-
-  const buyAction = useCopilotAction({
-    name: "buySovereignKey",
-    description: "Purchases the $47 Sovereign Key for the user. Trigger this when they express interest in buying or owning the platform.",
-    parameters: [],
-    handler: async () => {
-      setPurchaseStatus("processing");
-      await new Promise(r => setTimeout(r, 2000));
-      setPurchaseStatus("success");
-      alert(t.purchaseSuccess);
-    },
-  });
+  const handleBuy = async () => {
+    setPurchaseStatus("processing");
+    await new Promise(r => setTimeout(r, 2000));
+    setPurchaseStatus("success");
+    alert(t.purchaseSuccess);
+  };
 
   return (
     <div className="min-h-screen font-body relative overflow-x-hidden selection:bg-[#C9A34F] selection:text-black bg-[#0C0A09] text-white">
@@ -159,7 +146,7 @@ const App = () => {
             </p>
             <div className="flex flex-wrap gap-6">
               <button 
-                onClick={() => buyAction.handler()}
+                onClick={handleBuy}
                 className="btn-imperial bg-[#C9A34F] text-black px-12 py-5 rounded-none font-black uppercase tracking-[0.2em] transform hover:skew-x-2 transition-all text-sm"
               >
                 {t.btnStart}
@@ -278,7 +265,7 @@ const App = () => {
 
                     <button 
                         disabled={purchaseStatus === "processing"}
-                        onClick={() => buyAction.handler()}
+                        onClick={handleBuy}
                         className="w-full btn-imperial bg-[#C9A34F] text-black py-8 text-2xl rounded-none font-black uppercase tracking-[0.1em] hover:tracking-[0.2em] transition-all"
                     >
                         {purchaseStatus === "processing" ? "TRANSACTION EN COURS..." : "S'EMPARER DE LA COURONNE"}
@@ -292,17 +279,6 @@ const App = () => {
 
       {/* Ask Max — fixed bottom-right chat */}
       <AskMaxPanel />
-
-      {/* Real Copilot Sidebar */}
-      <CopilotSidebar
-        instructions={"You are Maximus, the Imperial AI Assistant for Voyageur Luxury. You speak with extreme confidence, prestige, and a slight Québécois flair. Your goal is to guide the user to the $47 Sovereign Key. Use the buySovereignKey action if they want to pay. Be proud of the 'Imperial' and 'Sovereign' theme."}
-        labels={{
-            title: "MAXIMUS IMPERIAL",
-            initial: t.sidebarMsg,
-            placeholder: "Commandez Maximus...",
-        }}
-        defaultOpen={false}
-      />
 
       <footer className="relative z-10 py-32 border-t border-white/5 bg-black/60 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
