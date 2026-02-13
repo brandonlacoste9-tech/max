@@ -69,3 +69,27 @@ class DiscordGateway(ChatGateway):
 
     def on_message(self, callback: Any) -> None:
         self._callback = callback
+
+    async def handle_webhook(self, body: dict[str, Any]) -> None:
+        """Process an incoming Discord webhook/interaction payload."""
+        import discord
+        
+        if not self._callback:
+            return
+            
+        # Handle interaction webhooks (buttons, selects, etc.)
+        if body.get("type") in (1, 2, 3, 4, 5):
+            # Interaction types: ping, button, select, modal
+            pass  # Could handle these specially
+        
+        # Handle message webhooks
+        if body.get("channel_id") and body.get("content"):
+            msg = IncomingMessage(
+                platform="discord",
+                chat_id=str(body.get("channel_id")),
+                user_id=str(body.get("author", {}).get("id", "")),
+                username=body.get("author", {}).get("username", ""),
+                text=body.get("content", ""),
+                raw=body,
+            )
+            await self._callback(msg)

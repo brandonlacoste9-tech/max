@@ -18,8 +18,8 @@ class TelegramGateway(ChatGateway):
 
     platform = "telegram"
 
-    def __init__(self, token: str) -> None:
-        self.token = token
+    def __init__(self, bot_token: str) -> None:
+        self.token = bot_token
         self._app: Any = None
         self._callback: Any = None
 
@@ -62,3 +62,23 @@ class TelegramGateway(ChatGateway):
 
     def on_message(self, callback: Any) -> None:
         self._callback = callback
+
+    async def handle_webhook(self, body: dict[str, Any]) -> None:
+        """Process an incoming Telegram webhook payload."""
+        from telegram import Update
+        from telegram.ext import ContextTypes
+        
+        if not self._app:
+            return
+            
+        update = Update.de_json(body, self._app.bot)
+        if update and update.message and update.message.text and self._callback:
+            msg = IncomingMessage(
+                platform="telegram",
+                chat_id=str(update.message.chat_id),
+                user_id=str(update.message.from_user.id),
+                username=update.message.from_user.username or "",
+                text=update.message.text,
+                raw={"update_id": update.update_id},
+            )
+            await self._callback(msg)

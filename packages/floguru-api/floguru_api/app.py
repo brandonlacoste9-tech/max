@@ -17,6 +17,7 @@ from floguru_healing.healer import HyperHealer
 from floguru_healing.memory import ExecutionMemory
 
 from floguru_api.routes import tasks, gurus, health, webhooks, human_loop, max as max_routes, browser
+from floguru_api.routes.webhooks import init_gateways
 from floguru_api.middleware.rate_limit import RateLimitMiddleware
 
 
@@ -33,6 +34,9 @@ def create_app() -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        # Initialize chat gateways
+        init_gateways()
+        
         app.state.event_bus = event_bus
         app.state.guru_router = guru_router
         app.state.healer = healer
