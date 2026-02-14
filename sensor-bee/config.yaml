@@ -1,0 +1,34 @@
+name: sensor-bee
+description: "Continuous niche scouting for Weekly SaaS Factory"
+
+sources:
+  product_hunt:
+    enabled: true
+    url: "https://api.producthunt.com/v2/graphql"
+    query: "recent products"
+    
+  twitter:
+    enabled: true
+    search: "wish there was an app for OR need an app that"
+    lang: "en"
+    
+  reddit:
+    enabled: true
+    subreddits:
+      - "smallbusiness"
+      - "SaaS"
+      - "Entrepreneur"
+      - "quebec"
+    query: "I wish there was"
+    
+  github:
+    enabled: true
+    trending: true
+
+output:
+  file: "revenue/hot_leads.md"
+  format: "markdown"
+
+schedule:
+  frequency: "daily"  # or every 6h, 12h
+  timezone: "America/Toronto"

@@ -9,8 +9,8 @@
 | Project | Description | Priority |
 |---------|-------------|----------|
 | **MAX Orchestrator** | Python orchestrator with SOUL.md, sandbox, watchdog | P0 |
+| **FloGuru** | Deploy - waiting on bot token | P0 |
 | **Vraie Québec** | First weekly SaaS spawn | P1 |
-| **Sensor Bee** | Continuous niche scouting | P1 |
 | **Voyageur Redeploy** | Fix 404, get working URL | P2 |
 | **TAKIN Memory Layer** | SQLite queries for memory | P2 |
 | **Linear Dashboard UI** | Full dashboard components | P2 |
@@ -25,6 +25,8 @@
 | **ZyeuteV5** | Quebec social platform | Bee |
 | **AdGenXAI/Koloni** | AI content generation | Bee |
 | **Antigravity Ecosystem** | Colony OS infrastructure | Bee |
+| **Sensor Bee** | Niche scouting - 12 leads | MAX |
+| **FloGuru** | Waiting on bot token | Bee |
 
 ---
 

@@ -1,0 +1,44 @@
+name: sensor-bee
+description: "Scout for Quebec SMBs and micro-SaaS opportunities"
+entry: planner
+
+agents:
+  planner:
+    model: gpt-4o
+    system_prompt: |
+      You are the Architect. Decompose the scouting task into:
+      1. Search targets (Reddit, Google, Product Hunt)
+      2. Lead criteria (Quebec SMBs with no social presence)
+      3. Output format (JSON for leads)
+    next: developer
+
+  developer:
+    model: gpt-4o
+    system_prompt: |
+      You are the Artisan. Implement the scout:
+      - Search for Quebec businesses without TikTok/Instagram
+      - Hunt Reddit for "I wish there was an app for..."
+      - Log results to revenue/hot_leads.md
+    tools:
+      - web_search
+      - web_fetch
+      - write_file
+    next: verifier
+
+  verifier:
+    model: gpt-4o
+    system_prompt: |
+      You are the Critic. Verify the scout works:
+      - Check leads file has valid entries
+      - Verify format is correct
+      - Report count found
+    tools:
+      - read_file
+    logic:
+      if_success: complete
+      if_failure: developer
+
+memory:
+  log_file: .colony/sensor-bee-log.jsonl
+  on_success: log_lead
+  on_failure: log_error

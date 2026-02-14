@@ -60,7 +60,7 @@ healing:
 # ---------- Chat Gateways ----------
 chat:
   telegram:
-    enabled: false
+    enabled: true
     # Token sourced from TELEGRAM_TOKEN env var
     polling: true
 
