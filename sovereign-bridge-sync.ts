@@ -34,6 +34,14 @@ const ZyeuteUserSchema = z.object({
   theme_preference: z.enum(['light', 'dark', 'auto']).optional(),
   gold_accent: z.boolean().optional(),
   
+  // Luxury Preferences (TAKIN-powered - synced from ZyeuteV5)
+  luxury_preferences: z.object({
+    gold_accent: z.boolean(),
+    leather_texture: z.boolean(),
+    hex_grid: z.boolean(),
+    viscosity: z.number().min(0).max(100),
+  }).optional(),
+  
   // Ti-Guy settings (Quebec authenticity)
   tiGuyCommentsEnabled: z.boolean(),
   
@@ -86,17 +94,19 @@ interface SyncResult {
  * Transform ZyeuteV5 user to Voyageur Luxury format
  */
 export function syncZyeuteToVoyageur(zyeuteUser: ZyeuteUser): Partial<VoyageurUser> {
+  const luxuryPrefs = zyeuteUser.luxury_preferences;
+  
   const result: Partial<VoyageurUser> = {
     id: zyeuteUser.id,
     displayName: zyeuteUser.display_name || zyeuteUser.username,
     avatarUrl: zyeuteUser.avatar_url,
     
-    // Map theme preferences
+    // Map theme preferences - use new luxury_preferences if available
     imperialTheme: {
-      accentGold: zyeuteUser.gold_accent || false,
-      leatherTexture: true, // Default for luxury
-      hexGrid: true, // Colony OS signature
-      viscosity: 'medium',
+      accentGold: luxuryPrefs?.gold_accent ?? zyeuteUser.gold_accent ?? false,
+      leatherTexture: luxuryPrefs?.leather_texture ?? true,
+      hexGrid: luxuryPrefs?.hex_grid ?? true,
+      viscosity: viscosityToEnum(luxuryPrefs?.viscosity ?? 50),
     },
     
     // Map Quebec settings
@@ -108,6 +118,15 @@ export function syncZyeuteToVoyageur(zyeuteUser: ZyeuteUser): Partial<VoyageurUs
   };
   
   return result;
+}
+
+/**
+ * Convert viscosity number (0-100) to enum
+ */
+function viscosityToEnum(value: number): 'low' | 'medium' | 'high' {
+  if (value <= 33) return 'low';
+  if (value <= 66) return 'medium';
+  return 'high';
 }
 
 /**
