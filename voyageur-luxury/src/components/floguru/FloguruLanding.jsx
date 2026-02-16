@@ -212,43 +212,91 @@ const FloguruLanding = () => {
               Download CADET and run everything locally with Ollama. 
               Your data never leaves your machine. Free forever.
             </p>
-            <p className="text-white/40 text-sm max-w-xl mx-auto">
-              💾 Requires ~15 GB free space · 🧠 8 GB RAM minimum · 🖥️ Windows 10+ or macOS 12+
-            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* Windows Download */}
-            <a
-              href="https://github.com/brandonlacoste9-tech/max/raw/main/install-max-windows.bat"
-              download
-              className="group flex items-center gap-4 p-6 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all"
-            >
-              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
-                🪟
+          {/* Choose your version */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Full Version */}
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500 text-black text-xs font-bold">RECOMMENDED</span>
+                  <span className="text-emerald-400 font-bold">Full Version</span>
+                </div>
+                <h3 className="text-2xl font-bold mb-2">3 AI Models</h3>
+                <p className="text-white/60 text-sm mb-4">
+                  Maximum performance with 3 specialized models for any task.
+                </p>
+                <ul className="text-sm text-white/50 space-y-1 mb-4">
+                  <li>✓ Llama 3.1 (General AI)</li>
+                  <li>✓ Gemma 3 (Fast responses)</li>
+                  <li>✓ Qwen Coder (Programming)</li>
+                </ul>
+                <p className="text-xs text-white/40 mb-4">
+                  💾 ~15 GB required · 🧠 8 GB RAM
+                </p>
+                <div className="space-y-2">
+                  <a
+                    href="https://github.com/brandonlacoste9-tech/max/raw/main/install-max-windows.bat"
+                    download
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all"
+                  >
+                    <span className="text-2xl">🪟</span>
+                    <span className="font-semibold">Windows</span>
+                    <ArrowRight className="h-4 w-4 text-emerald-400 ml-auto" />
+                  </a>
+                  <a
+                    href="https://github.com/brandonlacoste9-tech/max/raw/main/install-cadet-mac.sh"
+                    download
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all"
+                  >
+                    <span className="text-2xl">🍎</span>
+                    <span className="font-semibold">Mac</span>
+                    <ArrowRight className="h-4 w-4 text-emerald-400 ml-auto" />
+                  </a>
+                </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-lg mb-1">Cadet for Windows</h3>
-                <p className="text-white/50 text-sm">One-click installer · Auto-installs Ollama · Creates desktop shortcut</p>
+              
+              {/* Lite Version */}
+              <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="px-3 py-1 rounded-full bg-white/10 text-white/70 text-xs font-bold">LIGHT</span>
+                  <span className="text-white/70 font-bold">Lite Version</span>
+                </div>
+                <h3 className="text-2xl font-bold mb-2">1 AI Model</h3>
+                <p className="text-white/60 text-sm mb-4">
+                  Just the essentials. Perfect for limited storage or trying it out.
+                </p>
+                <ul className="text-sm text-white/50 space-y-1 mb-4">
+                  <li>✓ Llama 3.1 (General AI)</li>
+                  <li className="text-white/30">○ Gemma 3 (Not included)</li>
+                  <li className="text-white/30">○ Qwen Coder (Not included)</li>
+                </ul>
+                <p className="text-xs text-white/40 mb-4">
+                  💾 ~5 GB required · 🧠 8 GB RAM
+                </p>
+                <div className="space-y-2">
+                  <a
+                    href="https://github.com/brandonlacoste9-tech/max/raw/main/install-cadet-windows-lite.bat"
+                    download
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
+                  >
+                    <span className="text-2xl">🪟</span>
+                    <span className="font-semibold">Windows</span>
+                    <ArrowRight className="h-4 w-4 text-white/50 ml-auto" />
+                  </a>
+                  <a
+                    href="https://github.com/brandonlacoste9-tech/max/raw/main/install-cadet-mac-lite.sh"
+                    download
+                    className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:border-white/30 transition-all"
+                  >
+                    <span className="text-2xl">🍎</span>
+                    <span className="font-semibold">Mac</span>
+                    <ArrowRight className="h-4 w-4 text-white/50 ml-auto" />
+                  </a>
+                </div>
               </div>
-              <ArrowRight className="h-5 w-5 text-emerald-400 group-hover:translate-x-1 transition-transform" />
-            </a>
-            
-            {/* Mac Download */}
-            <a
-              href="https://github.com/brandonlacoste9-tech/max/raw/main/install-max-mac.sh"
-              download
-              className="group flex items-center gap-4 p-6 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all"
-            >
-              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
-                🍎
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-lg mb-1">Cadet for Mac</h3>
-                <p className="text-white/50 text-sm">Terminal script · Auto-installs Ollama · Creates app in Applications</p>
-              </div>
-              <ArrowRight className="h-5 w-5 text-emerald-400 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </div>
           </div>
           
           <div className="mt-6 text-center">
