@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "language": "Português",
+    "region": "Brasil",
+    "locale": "pt-br",
+    "currency": "BRL"
+  },
+  "navigation": {
+    "home": "Início",
+    "dashboard": "Painel",
+    "pricing": "Preços",
+    "systemInfo": "Info do Sistema",
+    "floguru": "FloGuru",
+    "legal": "Legal",
+    "privacy": "Privacidade",
+    "sovereignty": "Soberania",
+    "backToHome": "← Voltar ao início"
+  },
+  "pricing": {
+    "title": "Preços",
+    "subtitle": "Escolha o plano que melhor se adapta a você. Sem surpresas.",
+    "currency": "BRL",
+    "popular": "Popular",
+    "tiers": {
+      "free": {
+        "name": "Grátis",
+        "price": "R$0",
+        "period": "para sempre",
+        "description": "Experimente o CADET e use um pouco a cada mês.",
+        "subtitle": "Ótimo para testar ou usar de vez em quando.",
+        "cta": "Começar",
+        "features": [
+          "50 tarefas/mês",
+          "1 canal (WhatsApp ou Telegram)",
+          "Busca no diretório (somente leitura)",
+          "Suporte comunitário",
+          "Automação de navegador: Não",
+          "Suporte prioritário: Não"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "R$99",
+        "period": "/mês",
+        "description": "Para quem usa o CADET regularmente.",
+        "subtitle": "Tudo desbloqueado, roda mais rápido, funciona melhor.",
+        "cta": "Começar Starter",
+        "featured": true,
+        "features": [
+          "500 tarefas/mês",
+          "2 canais",
+          "Diretório + exportação",
+          "Automação de navegador",
+          "Suporte por email",
+          "Suporte prioritário: Não"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "R$189",
+        "period": "/mês",
+        "description": "Poder total para automação séria.",
+        "subtitle": "Suporte prioritário, mais capacidade, recursos avançados.",
+        "cta": "Começar Pro",
+        "features": [
+          "2.000 tarefas/mês",
+          "Todos os canais (Quad-Bridge)",
+          "Diretório + scoring de leads",
+          "Automação de navegador",
+          "Suporte prioritário",
+          "Acesso à API"
+        ]
+      },
+      "enterprise": {
+        "name": "Empresarial",
+        "price": "Personalizado",
+        "period": "",
+        "description": "Suporte dedicado, integrações personalizadas, SLA.",
+        "subtitle": "Para equipes e organizações com necessidades específicas.",
+        "cta": "Fale conosco",
+        "features": [
+          "Tarefas ilimitadas",
+          "Todos os canais",
+          "Integrações personalizadas",
+          "Suporte dedicado",
+          "Garantia SLA",
+          "Opção on-premise"
+        ]
+      },
+      "byok": {
+        "name": "Traga suas próprias chaves",
+        "price": "Pague pelo uso",
+        "period": "",
+        "description": "Traga suas próprias chaves de API. Pague apenas pelos tokens que usar.",
+        "subtitle": "OpenAI, Gemini, Ollama — você controla o modelo e o custo.",
+        "cta": "Configurar BYOK",
+        "features": [
+          "Tarefas ilimitadas (sua API)",
+          "Todos os canais",
+          "Acesso completo ao diretório",
+          "Auto-hospedado ou nuvem",
+          "Suporte comunitário",
+          "Sem limites de uso"
+        ]
+      }
+    }
+  },
+  "onboarding": {
+    "title": "Como você quer que o CADET funcione?",
+    "subtitle": "Escolha uma opção para começar — você pode mudar depois.",
+    "aiName": {
+      "label": "Nomeie sua IA",
+      "placeholder": "ex. Max, Meu assistente, Coco…"
+    },
+    "options": {
+      "recommended": {
+        "title": "Só funciona (recomendado)",
+        "description": "O CADET usa sua própria IA. Nada para configurar."
+      },
+      "byok": {
+        "title": "Usar minha conta de IA",
+        "description": "Para desenvolvedores que já têm OpenAI, Gemini, etc."
+      },
+      "local": {
+        "title": "Rodar no meu computador",
+        "description": "Use Ollama para manter tudo local."
+      }
+    },
+    "systemRequirements": {
+      "title": "Requisitos do Sistema:",
+      "storage": "Armazenamento: ~15 GB livres",
+      "ram": "RAM: 8 GB mínimo (16 GB recomendado)",
+      "os": "SO: Windows 10/11, macOS 12+, ou Linux",
+      "note": "Modelos de IA são arquivos grandes (4-8 GB cada)",
+      "viewDetails": "Ver detalhes →"
+    },
+    "signup": {
+      "success": "Você está na lista.",
+      "subWithName": "Sua IA se chamará {name}. Enviaremos um email quando estivermos prontos.",
+      "subWithoutName": "Enviaremos um email quando estivermos prontos.",
+      "cta": "Obter acesso antecipado",
+      "emailPlaceholder": "voce@exemplo.com"
+    }
+  },
+  "currency": {
+    "symbol": "R$",
+    "code": "BRL",
+    "name": "Real brasileiro",
+    "position": "before"
+  },
+  "paymentMethods": [
+    "Cartão de crédito",
+    "PayPal",
+    "PIX",
+    "Boleto bancário",
+    "Mercado Pago"
+  ],
+  "regionalInfo": {
+    "internetSpeed": "Otimizado para conexões de 10+ Mbps",
+    "storageNote": "Armazenamento em nuvem disponível com todos os planos pagos",
+    "powerReliability": "IA em nuvem recomendada para máxima disponibilidade"
+  },
+  "footer": {
+    "copyright": "© 2026 CADET. Todos os direitos reservados.",
+    "tagline": "Seu assistente de código com IA, onde quer que você trabalhe."
+  }
+}

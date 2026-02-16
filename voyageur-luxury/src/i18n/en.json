@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "language": "English",
+    "region": "US / International",
+    "locale": "en",
+    "currency": "USD"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "pricing": "Pricing",
+    "systemInfo": "System Info",
+    "floguru": "FloGuru",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "sovereignty": "Sovereignty",
+    "backToHome": "← Back to home"
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Choose the plan that fits. No surprises.",
+    "currency": "USD",
+    "popular": "Popular",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "period": "forever",
+        "description": "Try CADET and use it a bit each month.",
+        "subtitle": "Great for testing it out or using it now and then.",
+        "cta": "Get started",
+        "features": [
+          "50 tasks/month",
+          "1 channel (WhatsApp or Telegram)",
+          "Directory search (read-only)",
+          "Community support",
+          "Browser automation: No",
+          "Priority support: No"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "$19",
+        "period": "/month",
+        "description": "For people who use CADET regularly.",
+        "subtitle": "Everything unlocked, runs faster, works better.",
+        "cta": "Start Starter",
+        "featured": true,
+        "features": [
+          "500 tasks/month",
+          "2 channels",
+          "Directory search + export",
+          "Browser automation",
+          "Email support",
+          "Priority support: No"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "$35",
+        "period": "/month",
+        "description": "Full power for serious automation.",
+        "subtitle": "Priority support, more capacity, advanced features.",
+        "cta": "Start Pro",
+        "features": [
+          "2,000 tasks/month",
+          "All channels (Quad-Bridge)",
+          "Directory + lead scoring",
+          "Browser automation",
+          "Priority support",
+          "API access"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "period": "",
+        "description": "Dedicated support, custom integrations, SLA.",
+        "subtitle": "For teams and organizations with specific needs.",
+        "cta": "Contact us",
+        "features": [
+          "Unlimited tasks",
+          "All channels",
+          "Custom integrations",
+          "Dedicated support",
+          "SLA guarantee",
+          "On-premise option"
+        ]
+      },
+      "byok": {
+        "name": "Bring Your Own Keys",
+        "price": "Pay as you go",
+        "period": "",
+        "description": "Bring your own API keys. Pay only for tokens you use.",
+        "subtitle": "OpenAI, Gemini, Ollama — you control the model and the cost.",
+        "cta": "Set up BYOK",
+        "features": [
+          "Unlimited tasks (your API)",
+          "All channels",
+          "Full directory access",
+          "Self-hosted or cloud",
+          "Community support",
+          "No usage caps"
+        ]
+      }
+    }
+  },
+  "onboarding": {
+    "title": "How do you want CADET to run?",
+    "subtitle": "Pick one to get started — you can change this later.",
+    "aiName": {
+      "label": "Name your AI",
+      "placeholder": "e.g. Max, My assistant, Coco…"
+    },
+    "options": {
+      "recommended": {
+        "title": "Just make it work (recommended)",
+        "description": "CADET uses its own AI. Nothing to set up."
+      },
+      "byok": {
+        "title": "Use my own AI account",
+        "description": "For developers who already have OpenAI, Gemini, etc."
+      },
+      "local": {
+        "title": "Run it on my computer",
+        "description": "Use Ollama to keep everything local."
+      }
+    },
+    "systemRequirements": {
+      "title": "System Requirements:",
+      "storage": "Storage: ~15 GB free space",
+      "ram": "RAM: 8 GB minimum (16 GB recommended)",
+      "os": "OS: Windows 10/11, macOS 12+, or Linux",
+      "note": "AI models are large files (4-8 GB each)",
+      "viewDetails": "View detailed requirements →"
+    },
+    "signup": {
+      "success": "You're on the list.",
+      "subWithName": "Your AI will be called {name}. We'll email you when we're ready.",
+      "subWithoutName": "We'll email you when we're ready.",
+      "cta": "Get early access",
+      "emailPlaceholder": "you@example.com"
+    }
+  },
+  "currency": {
+    "symbol": "$",
+    "code": "USD",
+    "name": "US Dollar",
+    "position": "before"
+  },
+  "paymentMethods": [
+    "Credit Card",
+    "PayPal",
+    "Apple Pay",
+    "Google Pay"
+  ],
+  "regionalInfo": {
+    "internetSpeed": "Optimized for high-speed connections (25+ Mbps)",
+    "storageNote": "Cloud storage available with all paid plans",
+    "powerReliability": "Cloud-based AI recommended for maximum uptime"
+  },
+  "footer": {
+    "copyright": "© 2026 CADET. All rights reserved.",
+    "tagline": "Your AI coding assistant, everywhere you work."
+  }
+}
