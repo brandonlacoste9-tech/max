@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CADET — Intelligence Autonome pour le Québec</title>
+    <meta name="description" content="CADET: Assistant IA autonome pour professionnels québécois. Ollama intégré, souveraineté des données, conforme Bill 96." />
+    <meta name="keywords" content="IA Québec, CADET, Ollama, intelligence artificielle, Bill 96, souveraineté numérique, local-first" />
+    <meta property="og:title" content="CADET — Intelligence Autonome pour le Québec" />
+    <meta property="og:description" content="Assistant IA autonome pour professionnels québécois. 100% local, 100% privé." />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_CA" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚜️</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --quebec-blue: #003DA5;
+            --imperial-gold: #C9A34F;
+            --void: #0A0A0A;
+            --dark: #1A1A1A;
+            --gray: #2D2D2D;
+            --text: #E8E8E8;
+            --text-dim: #888;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', system-ui, sans-serif;
+            background: var(--void);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 24px;
+            background: rgba(10,10,10,0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--imperial-gold);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text);
+        }
+        
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: 
+                radial-gradient(ellipse at 50% 0%, rgba(201,163,79,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 50%, rgba(0,61,165,0.1) 0%, transparent 40%),
+                var(--void);
+            padding: 120px 24px 80px;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0,61,165,0.2);
+            border: 1px solid var(--quebec-blue);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--text);
+            margin-bottom: 32px;
+        }
+        
+        .hero-badge span {
+            color: var(--imperial-gold);
+        }
+        
+        h1 {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--imperial-gold) 0%, #F5E6A3 50%, var(--imperial-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+        
+        .tagline {
+            font-size: 20px;
+            color: var(--text-dim);
+            margin-bottom: 16px;
+            max-width: 600px;
+        }
+        
+        .sub-tagline {
+            font-size: 16px;
+            color: var(--text-dim);
+            margin-bottom: 48px;
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .download-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 24px;
+            background: var(--dark);
+            border: 1px solid var(--gray);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            border-color: var(--imperial-gold);
+            transform: translateY(-2px);
+        }
+        
+        .download-btn.primary {
+            background: var(--imperial-gold);
+            color: var(--void);
+            border-color: var(--imperial-gold);
+        }
+        
+        .download-btn.primary:hover {
+            background: #D4B35F;
+        }
+        
+        .download-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .download-label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .download-size {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        .system-req {
+            margin-top: 32px;
+            padding: 16px 24px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+        
+        .system-req strong {
+            color: var(--text);
+        }
+        
+        /* Features */
+        .features {
+            padding: 120px 0;
+            background: var(--dark);
+        }
+        
+        .section-title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--imperial-gold);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            margin-bottom: 64px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        
+        .card {
+            background: var(--void);
+            border: 1px solid var(--gray);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: var(--imperial-gold);
+            transform: translateY(-4px);
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+        
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: var(--imperial-gold);
+        }
+        
+        .card p {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        
+        /* Quebec Section */
+        .quebec {
+            padding: 120px 0;
+            background: 
+                radial-gradient(ellipse at 0% 50%, rgba(0,61,165,0.1) 0%, transparent 40%),
+                var(--void);
+        }
+        
+        .compliance-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 48px;
+        }
+        
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(0,61,165,0.1);
+            border: 1px solid var(--quebec-blue);
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .badge-icon {
+            font-size: 16px;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 120px 0;
+            background: var(--dark);
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid var(--gray);
+            padding: 24px 0;
+        }
+        
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--imperial-gold);
+            margin-bottom: 12px;
+        }
+        
+        .faq-answer {
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 48px 0;
+            text-align: center;
+            color: var(--text-dim);
+            border-top: 1px solid var(--gray);
+            background: var(--void);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+        
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text);
+        }
+        
+        /* Mobile */
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                padding: 100px 16px 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" class="nav-logo">⚜️ CADET</a>
+        <div class="nav-links">
+            <a href="#features">Fonctionnalités</a>
+            <a href="#quebec">Québec</a>
+            <a href="#faq">FAQ</a>
+            <a href="https://github.com/brandonlacoste9-tech/max">GitHub</a>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div class="hero-badge">
+            <span>⚜️</span> L'Intelligence Artificielle Autonome du Québec
+        </div>
+        <h1>CADET</h1>
+        <p class="tagline">Votre assistant IA autonome. 100% local. 100% privé. 100% québécois.</p>
+        <p class="sub-tagline">Avocats, plombiers, thérapeutes, coaches — obtenez de l'aide experte dans votre langue.</p>
+        
+        <div class="download-grid">
+            <a href="https://github.com/brandonlacoste9-tech/max/raw/main/installers/install-cadet-windows-fr.bat" class="download-btn primary">
+                <span class="download-icon">🪟</span>
+                <span class="download-label">Windows (Français)</span>
+                <span class="download-size">Version complète • 15 GB</span>
+            </a>
+            <a href="https://github.com/brandonlacoste9-tech/max/raw/main/installers/install-cadet-mac-fr.sh" class="download-btn primary">
+                <span class="download-icon">🍎</span>
+                <span class="download-label">Mac (Français)</span>
+                <span class="download-size">Version complète • 15 GB</span>
+            </a>
+            <a href="https://github.com/brandonlacoste9-tech/max/raw/main/installers/install-cadet-windows-en.bat" class="download-btn">
+                <span class="download-icon">🪟</span>
+                <span class="download-label">Windows (English)</span>
+                <span class="download-size">Full version • 15 GB</span>
+            </a>
+            <a href="https://github.com/brandonlacoste9-tech/max/raw/main/installers/install-cadet-mac-en.sh" class="download-btn">
+                <span class="download-icon">🍎</span>
+                <span class="download-label">Mac (English)</span>
+                <span class="download-size">Full version • 15 GB</span>
+            </a>
+        </div>
+        
+        <div class="system-req">
+            <strong>Configuration requise:</strong> Windows 10/11 ou macOS 12+ • 15 GB d'espace libre (version complète) ou 5 GB (version lite) • Connexion Internet pour le téléchargement initial
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Pourquoi CADET?</h2>
+            <p class="section-subtitle">L'IA qui respecte votre souveraineté numérique</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-icon">🏠</div>
+                    <h3>100% Local</h3>
+                    <p>Vos données restent sur votre machine. Pas de cloud, pas d'espionnage, pas de fuites. Ollama intégré pour une IA complètement autonome.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚜️</div>
+                    <h3>Conforme au Québec</h3>
+                    <p>Respecte la Loi 25 sur la protection des renseignements personnels et la Loi 96 sur la langue française. Vos données ne quittent jamais le Québec.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🗣️</div>
+                    <h3>Multilingue</h3>
+                    <p>Français (Québec), Anglais, Espagnol, Portugais. Parlez à CADET dans votre langue, il répond dans votre langue.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Expertise Spécialisée</h3>
+                    <p>Avocats, plombiers, thérapeutes, coachs de vie, diététistes, publicitaires — CADET s'adapte à votre domaine.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💬</div>
+                    <h3>Multi-Canal</h3>
+                    <p>WhatsApp, Telegram, Discord, Web. CADET est là où vous êtes, sur tous vos appareils.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔒</div>
+                    <h3>Privé & Sécurisé</h3>
+                    <p>Chiffrement de bout en bout. Pas de tracking. Pas de publicité. Votre vie privée est respectée.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="quebec" id="quebec">
+        <div class="container">
+            <h2 class="section-title">Conçu pour le Québec</h2>
+            <p class="section-subtitle">Une IA qui respecte vos lois et votre culture</p>
+            
+            <div class="compliance-badges">
+                <div class="badge">
+                    <span class="badge-icon">⚜️</span>
+                    <span>Conforme Loi 96 (Langue française)</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">🔒</span>
+                    <span>Conforme Loi 25 (Protection des données)</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">🏠</span>
+                    <span>100% Local-First</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">🌐</span>
+                    <span>Souveraineté Numérique</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 64px; text-align: center;">
+                <p style="color: var(--text-dim); max-width: 600px; margin: 0 auto;">
+                    CADET est développé au Québec, pour les Québécois. 
+                    Vos données restent chez vous, conformément aux lois québécoises les plus strictes en matière de protection de la vie privée.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Questions Fréquentes</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">Qu'est-ce que CADET?</div>
+                <div class="faq-answer">
+                    CADET (Autonomous Intelligence) est un assistant IA qui fonctionne entièrement sur votre ordinateur. 
+                    Contrairement à ChatGPT ou d'autres services cloud, vos conversations restent privées et ne quittent jamais votre machine.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Est-ce gratuit?</div>
+                <div class="faq-answer">
+                    Oui! CADET est open source et gratuit. Vous téléchargez le logiciel, vous l'installez, et c'est parti. 
+                    Pas d'abonnement, pas de frais cachés. Vous contrôlez entièrement votre IA.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Pourquoi 15 GB?</div>
+                <div class="faq-answer">
+                    CADET inclut plusieurs modèles d'IA (Llama 3.1, etc.) qui fonctionnent localement. 
+                    Ces modèles sont volumineux mais offrent une qualité comparable à ChatGPT sans envoyer vos données sur Internet. 
+                    Une version "Lite" de 5 GB est également disponible avec un seul modèle.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Mes données sont-elles vraiment privées?</div>
+                <div class="faq-answer">
+                    Absolument. Tout fonctionne sur votre machine. Vos conversations ne sont pas envoyées à des serveurs externes. 
+                    Conforme à la Loi 25 québécoise sur la protection des renseignements personnels.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Comment puis-je contribuer?</div>
+                <div class="faq-answer">
+                    CADET est open source! Rejoignez-nous sur GitHub pour signaler des bugs, proposer des fonctionnalités, 
+                    ou contribuer au code. La communauté québécoise est la bienvenue.
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/brandonlacoste9-tech/max">GitHub</a>
+                <a href="#">Documentation</a>
+                <a href="#">Contact</a>
+            </div>
+            <p>⚜️ CADET — Intelligence Autonome pour le Québec</p>
+            <p style="margin-top: 8px; font-size: 12px;">Conforme Loi 96 & Loi 25 • Open Source • Développé au Québec</p>
+        </div>
+    </footer>
+</body>
+</html>
