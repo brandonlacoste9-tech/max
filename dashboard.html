@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐝 Colony OS — Project Board</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+    
+    :root {
+      --gold: #D4AF37;
+      --gold-dim: #AA8C2C;
+      --black: #0D0D0D;
+      --void: #1A1A1A;
+      --gray: #2D2D2D;
+      --text: #E8E8E8;
+      --text-dim: #888;
+      --green: #10B981;
+      --blue: #3B82F6;
+      --purple: #8B5CF6;
+      --red: #EF4444;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(212,175,55,0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(212,175,55,0.03) 0%, transparent 50%);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--gray);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo svg {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .logo h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -1px;
+    }
+    
+    .logo span {
+      color: var(--text-dim);
+      font-size: 14px;
+      font-weight: 400;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 32px;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    
+    .column {
+      background: var(--void);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--gray);
+    }
+    
+    .column-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .column-icon {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .column.backlog .column-icon { background: var(--text-dim); }
+    .column.in-progress .column-icon { background: var(--blue); }
+    .column.done .column-icon { background: var(--green); }
+    
+    .column-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text);
+    }
+    
+    .column-count {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+      background: var(--gray);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    
+    .card {
+      background: var(--black);
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .card:hover {
+      border-color: var(--gold-dim);
+      transform: translateY(-2px);
+    }
+    
+    .card:last-child { margin-bottom: 0; }
+    
+    .card-priority {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    
+    .card-priority.p0 { background: var(--red); color: white; }
+    .card-priority.p1 { background: var(--purple); color: white; }
+    .card-priority.p2 { background: var(--text-dim); color: var(--black); }
+    
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--gray);
+      color: var(--text-dim);
+    }
+    
+    .tag.done { background: rgba(16,185,129,0.2); color: var(--green); }
+    .tag.shipped { background: rgba(16,185,129,0.2); color: var(--green); }
+    
+    .week-goals {
+      margin-top: 48px;
+      padding: 24px;
+      background: var(--void);
+      border-radius: 12px;
+      border: 1px solid var(--gold-dim);
+    }
+    
+    .week-goals h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--gold);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .goals-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    
+    .goal {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+    
+    .goal input[type="checkbox"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--gold-dim);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .goal input[type="checkbox"]:checked {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    
+    .links {
+      margin-top: 32px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    
+    .link {
+      font-size: 13px;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+    
+    .link:hover { border-color: var(--gold); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <svg viewBox="0 0 40 40" fill="none">
+          <polygon points="20,2 37,11 37,29 20,38 3,29 3,11" stroke="#D4AF37" stroke-width="2" fill="none"/>
+          <polygon points="20,8 30,13 30,27 20,32 10,27 10,13" stroke="#D4AF37" stroke-width="1" fill="rgba(212,175,55,0.1)"/>
+          <circle cx="20" cy="20" r="4" fill="#D4AF37"/>
+        </svg>
+        <div>
+          <h1>COLONY OS</h1>
+          <span>Project Board</span>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">7</div>
+          <div class="stat-label">Backlog</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">3</div>
+          <div class="stat-label">In Progress</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">9</div>
+          <div class="stat-label">Done</div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="board">
+      <!-- BACKLOG -->
+      <div class="column backlog">
+        <div class="column-header">
+          <div class="column-icon"></div>
+          <div class="column-title">Backlog</div>
+          <div class="column-count">7</div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p0">P0</span>
+          <div class="card-title">MAX Orchestrator</div>
+          <div class="card-desc">Python orchestrator with SOUL.md, sandbox, watchdog</div>
+          <div class="card-tags">
+            <span class="tag">architecture</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p1">P1</span>
+          <div class="card-title">Vraie Québec</div>
+          <div class="card-desc">First weekly SaaS spawn - local directory</div>
+          <div class="card-tags">
+            <span class="tag">saas</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p1">P1</span>
+          <div class="card-title">Sensor Bee</div>
+          <div class="card-desc">Continuous niche scouting system</div>
+          <div class="card-tags">
+            <span class="tag">autonomy</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p1">P1</span>
+          <div class="card-title">Weekly SaaS Factory</div>
+          <div class="card-desc">7-day spawn pipeline infrastructure</div>
+          <div class="card-tags">
+            <span class="tag">factory</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p2">P2</span>
+          <div class="card-title">Voyageur Redeploy</div>
+          <div class="card-desc">Fix 404, get working URL</div>
+          <div class="card-tags">
+            <span class="tag">deploy</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p2">P2</span>
+          <div class="card-title">TAKIN Memory Layer</div>
+          <div class="card-desc">SQLite queries for persistent memory</div>
+          <div class="card-tags">
+            <span class="tag">memory</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p2">P2</span>
+          <div class="card-title">Linear Dashboard UI</div>
+          <div class="card-desc">Full dashboard component library</div>
+          <div class="card-tags">
+            <span class="tag">ui</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- IN PROGRESS -->
+      <div class="column in-progress">
+        <div class="column-header">
+          <div class="column-icon"></div>
+          <div class="column-title">In Progress</div>
+          <div class="column-count">3</div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p1">P1</span>
+          <div class="card-title">ZyeuteV5</div>
+          <div class="card-desc">Quebec social platform</div>
+          <div class="card-tags">
+            <span class="tag">platform</span>
+            <span class="tag">quebec</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p1">P1</span>
+          <div class="card-title">AdGenXAI / Koloni</div>
+          <div class="card-desc">AI content generation</div>
+          <div class="card-tags">
+            <span class="tag">ai</span>
+            <span class="tag">content</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <span class="card-priority p1">P1</span>
+          <div class="card-title">Antigravity Ecosystem</div>
+          <div class="card-desc">Colony OS infrastructure</div>
+          <div class="card-tags">
+            <span class="tag">infrastructure</span>
+            <span class="tag">hive</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- DONE -->
+      <div class="column done">
+        <div class="column-header">
+          <div class="column-icon"></div>
+          <div class="column-title">Done</div>
+          <div class="column-count">9</div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Korean AI Compliance</div>
+          <div class="card-desc">MVP shipped to GitHub</div>
+          <div class="card-tags">
+            <span class="tag done">shipped</span>
+            <span class="tag">compliance</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Sovereign Bridge</div>
+          <div class="card-desc">Zyeute ↔ Voyageur schema sync</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Network Map</div>
+          <div class="card-desc">Colony OS mesh documented</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">THE CODEX</div>
+          <div class="card-desc">Genesis records for MAX</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">SOUL.md</div>
+          <div class="card-desc">MAX constitution</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">AGENT.md</div>
+          <div class="card-desc">Technical specification</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">Ralph Wiggins Loop</div>
+          <div class="card-desc">Iterative task completion</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">NightlyHiveAudit</div>
+          <div class="card-desc">Cron job at 3 AM</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-title">CronStatusCard</div>
+          <div class="card-desc">Linear-style component</div>
+          <div class="card-tags">
+            <span class="tag done">done</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="week-goals">
+      <h2>🎯 This Week's Goals</h2>
+      <div class="goals-list">
+        <label class="goal">
+          <input type="checkbox">
+          Deploy MAX orchestrator (blueprint ready)
+        </label>
+        <label class="goal">
+          <input type="checkbox">
+          Redeploy Voyageur Luxury
+        </label>
+        <label class="goal">
+          <input type="checkbox">
+          Finalize Vraie Québec specs
+        </label>
+        <label class="goal">
+          <input type="checkbox">
+          Test watchdog kill-switch
+        </label>
+      </div>
+    </div>
+    
+    <div class="links">
+      <a class="link" href="https://zyeutev5-production.up.railway.app" target="_blank">ZyeuteV5 →</a>
+      <a class="link" href="https://github.com/brandonlacoste9-tech/korean-AI-compliance-" target="_blank">Korean AI Compliance →</a>
+      <a class="link" href="https://github.com/brandonlacoste9-tech/max" target="_blank">MAX Repo →</a>
+    </div>
+  </div>
+</body>
+</html>

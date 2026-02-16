@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Shield,
   Globe,
@@ -8,6 +8,7 @@ import {
   Bot,
   ArrowRight,
   Check,
+  Menu,
 } from 'lucide-react';
 import MaxActiveBrowser from './MaxActiveBrowser';
 import AskMaxPanel from './AskMaxPanel';
@@ -44,6 +45,7 @@ const CTA_THOUGHTS = [
  */
 const FloguruLanding = () => {
   const navigate = useNavigate();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const goToPricing = () => navigate('/pricing');
   const goToOnboarding = () => navigate('/pricing#onboarding');
 
@@ -62,6 +64,7 @@ const FloguruLanding = () => {
       />
 
       {/* Nav */}
+      <div className="relative">
       <nav className="relative z-10 flex items-center justify-between px-6 py-6 max-w-6xl mx-auto">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/20">
@@ -71,39 +74,43 @@ const FloguruLanding = () => {
             Flo<span className="text-cyan-400">Guru</span>
           </span>
         </div>
-        <div className="flex items-center gap-6 text-sm text-white/60">
-          <Link
-            to="/"
-            className="hover:text-cyan-400 transition-colors duration-200"
-          >
-            Voyageur
-          </Link>
-          <a
-            href="#features"
-            className="hover:text-cyan-400 transition-colors duration-200"
-          >
-            Features
-          </a>
-          <Link
-            to="/pricing"
-            className="hover:text-cyan-400 transition-colors duration-200"
-          >
-            Pricing
-          </Link>
-          <Link
-            to="/system-info"
-            className="hover:text-cyan-400 transition-colors duration-200"
-          >
-            System Info
-          </Link>
-          <Link
-            to="/pricing"
-            className="rounded-lg bg-cyan-500/20 px-4 py-2 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/30 transition-colors duration-200"
-          >
-            Get started
-          </Link>
+        <div className="hidden lg:flex items-center gap-6 text-sm text-white/60">
+          <Link to="/" className="hover:text-cyan-400 transition-colors duration-200">Accueil</Link>
+          <Link to="/dashboard" className="hover:text-cyan-400 transition-colors duration-200">Tableau de Bord</Link>
+          <a href="#features" className="hover:text-cyan-400 transition-colors duration-200">Features</a>
+          <Link to="/pricing" className="hover:text-cyan-400 transition-colors duration-200">Prix</Link>
+          <Link to="/system-info" className="hover:text-cyan-400 transition-colors duration-200">Info Système</Link>
+          <Link to="/pricing" className="rounded-lg bg-cyan-500/20 px-4 py-2 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/30 transition-colors duration-200">Get started</Link>
         </div>
+        <button
+          type="button"
+          onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 hover:bg-cyan-500/20 transition-colors cursor-pointer"
+          aria-label="Menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
       </nav>
+      <AnimatePresence>
+        {mobileNavOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden absolute z-40 top-full left-0 right-0 bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-white/10"
+          >
+            <div className="flex flex-col gap-4 p-6 text-sm text-white/60">
+              <Link to="/" className="hover:text-cyan-400 transition-colors" onClick={() => setMobileNavOpen(false)}>Accueil</Link>
+              <Link to="/dashboard" className="hover:text-cyan-400 transition-colors" onClick={() => setMobileNavOpen(false)}>Tableau de Bord</Link>
+              <a href="#features" className="hover:text-cyan-400 transition-colors" onClick={() => setMobileNavOpen(false)}>Features</a>
+              <Link to="/pricing" className="hover:text-cyan-400 transition-colors" onClick={() => setMobileNavOpen(false)}>Prix</Link>
+              <Link to="/system-info" className="hover:text-cyan-400 transition-colors" onClick={() => setMobileNavOpen(false)}>Info Système</Link>
+              <Link to="/pricing" className="rounded-lg bg-cyan-500/20 px-4 py-2 text-cyan-400 border border-cyan-500/30 w-fit" onClick={() => setMobileNavOpen(false)}>Get started</Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      </div>
 
       {/* Hero */}
       <main className="relative z-10 pt-12 pb-24 px-6 max-w-6xl mx-auto">

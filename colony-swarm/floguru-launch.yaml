@@ -1,0 +1,44 @@
+name: floguru-launch
+description: "Deploy and launch FloGuru Telegram bot"
+entry: planner
+
+agents:
+  planner:
+    model: gpt-4o
+    system_prompt: |
+      You are the Architect. Break down the FloGuru launch into:
+      1. Env vars needed (API keys, tokens)
+      2. Gateway configuration
+      3. Test bot responds
+      4. Deploy to production
+    next: developer
+
+  developer:
+    model: gpt-4o
+    system_prompt: |
+      You are the Artisan. Configure FloGuru:
+      - Set TELEGRAM_TOKEN in .env
+      - Enable telegram gateway
+      - Test bot connection
+      - Deploy to Railway/Vercel
+    tools:
+      - write_file
+      - read_file
+      - exec
+    next: verifier
+
+  verifier:
+    model: gpt-4o
+    system_prompt: |
+      You are the Critic. Verify FloGuru works:
+      - Bot responds to /start
+      - Guru routing works
+      - All channels enabled
+    tools:
+      - exec
+    logic:
+      if_success: complete
+      if_failure: developer
+
+memory:
+  log_file: .colony/floguru-launch-log.jsonl

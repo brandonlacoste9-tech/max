@@ -1,11 +1,5 @@
 {
   "buildCommand": "echo 'Static site - no build needed'",
-  "outputDirectory": ".",
-  "framework": null,
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ]
+  "installCommand": "echo 'No dependencies needed'",
+  "framework": "static"
 }

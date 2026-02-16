@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd voyageur-luxury && npm run build",
+  "installCommand": "cd voyageur-luxury && npm install",
+  "framework": "vite",
+  "outputDirectory": "voyageur-luxury/dist"
+}

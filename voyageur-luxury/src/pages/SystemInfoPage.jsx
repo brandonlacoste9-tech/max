@@ -144,14 +144,17 @@ const SystemInfoPage = () => {
           <Link to="/" className="text-white/60 hover:text-[#C9A34F] transition-colors">
             Accueil
           </Link>
+          <Link to="/dashboard" className="text-white/60 hover:text-[#C9A34F] transition-colors">
+            Tableau de Bord
+          </Link>
           <Link to="/floguru" className="text-white/60 hover:text-[#C9A34F] transition-colors">
             FloGuru
           </Link>
           <Link to="/pricing" className="text-white/60 hover:text-[#C9A34F] transition-colors">
-            Pricing
+            Prix
           </Link>
           <Link to="/system-info" className="text-[#C9A34F] font-semibold">
-            System Info
+            Info Système
           </Link>
         </div>
       </nav>

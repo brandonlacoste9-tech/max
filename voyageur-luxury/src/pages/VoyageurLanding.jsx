@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Shield,
   Globe,
@@ -9,6 +9,8 @@ import {
   Crown,
   Star,
   Sparkles,
+  Settings,
+  Menu,
 } from 'lucide-react';
 import AntigravityCore from '../components/AntigravityCore';
 import GuruDashboard from '../components/floguru/GuruDashboard';
@@ -43,9 +45,15 @@ const content = {
         desc: "Tes clés, tes données, ton empire.",
       },
     ],
-    priceLabel: "La Clé Souveraine",
-    priceValue: "47$ CAD",
-    priceNote: "Taxes incluses. Un seul paiement.",
+    priceLabel: "À partir de 0$",
+    priceValue: "Gratuit",
+    priceNote: "Starter 19$/mois · Pro 35$/mois · Cadre supérieur sur mesure.",
+    priceBullets: [
+      "Gratuit pour commencer",
+      "Starter 19$ — Pro 35$",
+      "Cadre supérieur sur mesure",
+      "Paiement à l'usage (BYOK)",
+    ],
     purchaseSuccess: "Félicitations! Tu possèdes maintenant la Clé Souveraine.",
   },
   en: {
@@ -76,15 +84,24 @@ const content = {
         desc: "Your keys, your data, your empire.",
       },
     ],
-    priceLabel: "The Sovereign Key",
-    priceValue: "$47 CAD",
-    priceNote: "Taxes included. One-time payment.",
+    priceLabel: "From $0",
+    priceValue: "Free",
+    priceNote: "Starter $19/mo · Pro $35/mo · Enterprise custom.",
+    priceBullets: [
+      "Free to start",
+      "Starter $19 — Pro $35",
+      "Enterprise custom",
+      "Pay for tokens (BYOK)",
+    ],
     purchaseSuccess: "Congratulations! You now own the Sovereign Key.",
   },
 };
 
 const VoyageurLanding = () => {
   const [isEnglish, setIsEnglish] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [showOtherLang, setShowOtherLang] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [purchaseStatus, setPurchaseStatus] = useState(null);
   const navigate = useNavigate();
   const t = isEnglish ? content.en : content.qc;
@@ -123,6 +140,7 @@ const VoyageurLanding = () => {
         ))}
       </div>
 
+      <div className="relative">
       <nav className="relative z-50 flex items-center justify-between px-8 py-8 max-w-7xl mx-auto backdrop-blur-sm">
         <Link
           to="/"
@@ -148,6 +166,12 @@ const VoyageurLanding = () => {
               Accueil
             </Link>
             <Link
+              to="/dashboard"
+              className="hover:text-[#C9A34F] transition-all hover:tracking-[0.4em]"
+            >
+              Tableau de Bord
+            </Link>
+            <Link
               to="/floguru"
               className="hover:text-[#C9A34F] transition-all hover:tracking-[0.4em]"
             >
@@ -163,15 +187,107 @@ const VoyageurLanding = () => {
 
           <button
             type="button"
-            onClick={() => setIsEnglish(!isEnglish)}
-            className="w-12 h-12 glass-card flex items-center justify-center text-[#C9A34F] hover:bg-[#C9A34F] hover:text-black transition-all group overflow-hidden relative"
-            aria-label={isEnglish ? 'Switch to French' : 'Switch to English'}
+            onClick={() => setMobileNavOpen(!mobileNavOpen)}
+            className="lg:hidden w-12 h-12 glass-card flex items-center justify-center text-[#C9A34F] hover:bg-[#C9A34F] hover:text-black transition-all cursor-pointer"
+            aria-label="Menu"
           >
-            <Globe className="w-5 h-5 relative z-10 group-hover:rotate-180 transition-transform duration-500" />
+            <Menu className="w-5 h-5" />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setSettingsOpen(true)}
+            className="w-12 h-12 glass-card flex items-center justify-center text-[#C9A34F] hover:bg-[#C9A34F] hover:text-black transition-all group overflow-hidden relative cursor-pointer"
+            aria-label="Paramètres"
+          >
+            <Settings className="w-5 h-5 relative z-10 group-hover:rotate-90 transition-transform duration-500" />
             <div className="absolute inset-0 bg-[#C9A34F] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
           </button>
         </div>
       </nav>
+
+      {/* Paramètres modal — Langue (Bill 96: English hidden, only in settings) */}
+      <AnimatePresence>
+        {settingsOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+            onClick={() => setSettingsOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="glass-card border-[#C9A34F]/30 p-8 max-w-md w-full gold-glow"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-2xl font-heading font-bold text-[#C9A34F] mb-6 uppercase tracking-wider">
+                Paramètres
+              </h2>
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-white/50 uppercase tracking-[0.2em] mb-3">
+                  Langue
+                </h3>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => { setIsEnglish(false); setSettingsOpen(false); setShowOtherLang(false); }}
+                    className={`w-full text-left px-4 py-3 rounded-lg font-body transition-all cursor-pointer ${!isEnglish ? 'bg-[#C9A34F] text-black font-bold' : 'bg-white/5 text-white/70 hover:bg-white/10'}`}
+                  >
+                    Québécois
+                  </button>
+                  {!showOtherLang ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowOtherLang(true)}
+                      className="w-full text-left px-4 py-2 text-[10px] text-white/30 hover:text-white/50 uppercase tracking-widest cursor-pointer"
+                    >
+                      Autre langue…
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => { setIsEnglish(true); setSettingsOpen(false); setShowOtherLang(false); }}
+                      className={`w-full text-left px-4 py-2 rounded-lg font-body text-[11px] transition-all cursor-pointer ${isEnglish ? 'bg-white/10 text-[#C9A34F]' : 'text-white/40 hover:bg-white/5'}`}
+                    >
+                      English
+                    </button>
+                  )}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSettingsOpen(false)}
+                className="text-xs text-white/40 hover:text-[#C9A34F] uppercase tracking-widest cursor-pointer"
+              >
+                Fermer
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile nav dropdown */}
+      <AnimatePresence>
+        {mobileNavOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden absolute z-40 top-full left-0 right-0 bg-[#0C0A09]/95 backdrop-blur-xl border-b border-white/10"
+          >
+            <div className="flex flex-col gap-4 p-6 text-xs font-bold tracking-widest uppercase text-white/50">
+              <Link to="/" className="hover:text-[#C9A34F] transition-all" onClick={() => setMobileNavOpen(false)}>Accueil</Link>
+              <Link to="/dashboard" className="hover:text-[#C9A34F] transition-all" onClick={() => setMobileNavOpen(false)}>Tableau de Bord</Link>
+              <Link to="/floguru" className="hover:text-[#C9A34F] transition-all" onClick={() => setMobileNavOpen(false)}>FloGuru</Link>
+              <Link to="/pricing" className="hover:text-[#C9A34F] transition-all" onClick={() => setMobileNavOpen(false)}>Prix</Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      </div>
 
       <main className="relative z-10 pt-24 pb-48 px-8 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
@@ -304,27 +420,14 @@ const VoyageurLanding = () => {
               <h2 className="text-6xl mb-4 font-heading text-[#C9A34F] font-bold tracking-tighter">
                 {t.priceLabel}
               </h2>
-              <div className="flex items-end gap-2 mb-4">
-                <span className="text-[10rem] font-black font-body text-white leading-none">
-                  47
-                </span>
-                <div className="flex flex-col mb-4">
-                  <span className="text-4xl font-bold text-[#C9A34F]">$</span>
-                  <span className="text-xl font-bold text-white/40 uppercase tracking-widest">
-                    CAD
-                  </span>
-                </div>
-              </div>
+              <p className="text-4xl md:text-5xl font-black text-white mb-4">
+                {t.priceValue}
+              </p>
               <p className="text-[#C9A34F] mb-12 uppercase tracking-[0.2em] text-sm font-black italic">
                 {t.priceNote}
               </p>
               <ul className="space-y-6 mb-16">
-                {[
-                  "Accès à vie à Maximus Prime",
-                  "Souveraineté Totale (BYOK)",
-                  "Omni-Channel Quad-Bridge",
-                  "Support Prioritaire Québécois",
-                ].map((item, i) => (
+                {t.priceBullets.map((item, i) => (
                   <li
                     key={i}
                     className="flex items-center gap-4 text-white/70 font-bold tracking-tight"
@@ -370,15 +473,15 @@ const VoyageurLanding = () => {
             <Link to="/pricing" className="hover:text-[#C9A34F] transition-colors">
               Prix
             </Link>
-            <a href="#" className="hover:text-[#C9A34F] transition-colors">
+            <Link to="/legal" className="hover:text-[#C9A34F] transition-colors">
               Légal (Bill 96)
-            </a>
-            <a href="#" className="hover:text-[#C9A34F] transition-colors">
+            </Link>
+            <Link to="/confidentialite" className="hover:text-[#C9A34F] transition-colors">
               Confidentialité
-            </a>
-            <a href="#" className="hover:text-[#C9A34F] transition-colors">
+            </Link>
+            <Link to="/souverainete" className="hover:text-[#C9A34F] transition-colors">
               Souveraineté
-            </a>
+            </Link>
           </div>
         </div>
       </footer>
