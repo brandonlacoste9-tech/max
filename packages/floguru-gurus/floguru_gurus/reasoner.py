@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 from typing import Any
 
@@ -29,14 +30,18 @@ class ReasonerGuru(Guru):
         config: GuruConfig | None = None,
         llm: LLMClient | None = None,
     ) -> None:
+        # Use environment variable or default to Ollama
+        model = os.getenv("DEFAULT_MODEL", "ollama/llama3.1")
+        api_base = os.getenv("OLLAMA_API_BASE", "http://localhost:11434")
+        
         config = config or GuruConfig(
             name="Reasoner",
             tier=GuruTier.LOGIC,
-            model="deepseek/deepseek-reasoner",
+            model=model,
             system_prompt=DEFAULT_SYSTEM,
         )
         super().__init__(config)
-        self.llm = llm or LLMClient(default_model=config.model)
+        self.llm = llm or LLMClient(default_model=config.model, api_base=api_base)
 
     async def execute(self, task: Any) -> GuruResult:
         if isinstance(task, Task):
