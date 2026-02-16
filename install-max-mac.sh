@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-MAX_DIR="$HOME/MAX-AI"
+CADET_DIR="$HOME/Cadet-AI"
 REQUIRED_GB=15
 REQUIRED_BYTES=$((REQUIRED_GB * 1024 * 1024 * 1024))
 
@@ -22,7 +22,7 @@ print_header() {
     echo ""
     echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BLUE}║                                                              ║${NC}"
-    echo -e "${BLUE}║${NC}              🤖 MAX - Your Free AI Assistant                 ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}              🤖 CADET - Autonomous Intelligence              ${BLUE}║${NC}"
     echo -e "${BLUE}║                                                              ║${NC}"
     echo -e "${BLUE}║${NC}         No API keys. No subscriptions. 100% Private.         ${BLUE}║${NC}"
     echo -e "${BLUE}║                                                              ║${NC}"
@@ -146,11 +146,11 @@ else
 fi
 echo ""
 
-# Create MAX directory
-print_step "Creating MAX directory..."
-mkdir -p "$MAX_DIR"
-cd "$MAX_DIR"
-print_success "Directory ready: $MAX_DIR"
+# Create CADET directory
+print_step "Creating CADET directory..."
+mkdir -p "$CADET_DIR"
+cd "$CADET_DIR"
+print_success "Directory ready: $CADET_DIR"
 echo ""
 
 # Clone or update FloGuru
@@ -193,17 +193,17 @@ print_success "All AI models downloaded!"
 echo ""
 
 # Create launch script
-cat > "$MAX_DIR/start-max.command" << 'EOF'
+cat > "$CADET_DIR/start-cadet.command" << 'EOF'
 #!/bin/bash
-cd "$HOME/MAX-AI"
-echo "🚀 Starting MAX AI..."
-echo "   This window will stay open while MAX is running"
-echo "   Close this window to stop MAX"
+cd "$HOME/Cadet-AI"
+echo "🚀 Starting CADET..."
+echo "   This window will stay open while CADET is running"
+echo "   Close this window to stop CADET"
 echo ""
 python3 floguru.py api
 EOF
 
-chmod +x "$MAX_DIR/start-max.command"
+chmod +x "$CADET_DIR/start-cadet.command"
 
 # Create an app launcher using Automator/AppleScript
 cat > "$MAX_DIR/MAX AI.app.command" << 'EOF'
@@ -220,39 +220,39 @@ EOF
 chmod +x "$MAX_DIR/MAX AI.app.command"
 
 # Create desktop shortcut
-DESKTOP_SHORTCUT="$HOME/Desktop/MAX AI.command"
-cp "$MAX_DIR/start-max.command" "$DESKTOP_SHORTCUT"
+DESKTOP_SHORTCUT="$HOME/Desktop/Cadet AI.command"
+cp "$CADET_DIR/start-cadet.command" "$DESKTOP_SHORTCUT"
 chmod +x "$DESKTOP_SHORTCUT"
 
 # Create application in Applications folder
-APP_DIR="$HOME/Applications/MAX AI.app/Contents/MacOS"
+APP_DIR="$HOME/Applications/Cadet AI.app/Contents/MacOS"
 mkdir -p "$APP_DIR"
 
-cat > "$APP_DIR/MAX AI" << 'EOF'
+cat > "$APP_DIR/Cadet AI" << 'EOF'
 #!/bin/bash
-cd "$HOME/MAX-AI"
+cd "$HOME/Cadet-AI"
 osascript <<'APPLESCRIPT'
 tell application "Terminal"
-    do script "cd $HOME/MAX-AI && clear && echo '🤖 MAX AI Launcher' && echo '' && echo 'Starting your AI assistant...' && echo '' && python3 floguru.py api"
+    do script "cd $HOME/Cadet-AI && clear && echo '🤖 CADET - Autonomous Intelligence' && echo '' && echo 'Starting your AI assistant...' && echo '' && python3 floguru.py api"
     activate
 end tell
 APPLESCRIPT
 EOF
 
-chmod +x "$APP_DIR/MAX AI"
+chmod +x "$APP_DIR/Cadet AI"
 
 # Create Info.plist for the app
-cat > "$HOME/Applications/MAX AI.app/Contents/Info.plist" << 'EOF'
+cat > "$HOME/Applications/Cadet AI.app/Contents/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key>
-    <string>MAX AI</string>
+    <string>Cadet AI</string>
     <key>CFBundleIdentifier</key>
-    <string>com.floguru.max</string>
+    <string>com.floguru.cadet</string>
     <key>CFBundleName</key>
-    <string>MAX AI</string>
+    <string>Cadet AI</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -269,28 +269,28 @@ print_success "INSTALLATION COMPLETE!"
 echo ""
 echo "═══════════════════════════════════════════════════════════════"
 echo ""
-echo "   📍 Installation location: $MAX_DIR"
-echo "   🖥️  Desktop shortcut: MAX AI (on your Desktop)"
-echo "   🚀 Applications folder: MAX AI.app"
+echo "   📍 Installation location: $CADET_DIR"
+echo "   🖥️  Desktop shortcut: Cadet AI (on your Desktop)"
+echo "   🚀 Applications folder: Cadet AI.app"
 echo "   🌐 Web interface: http://localhost:8420"
 echo ""
-echo "   To start MAX in the future:"
-echo "   • Double-click 'MAX AI' on your desktop, OR"
-echo "   • Open 'MAX AI' from your Applications folder"
+echo "   To start CADET in the future:"
+echo "   • Double-click 'Cadet AI' on your desktop, OR"
+echo "   • Open 'Cadet AI' from your Applications folder"
 echo ""
 echo "═══════════════════════════════════════════════════════════════"
 echo ""
 
 # Ask if user wants to start now
-read -p "🚀 Would you like to start MAX now? (y/N): " START_NOW
+read -p "🚀 Would you like to start CADET now? (y/N): " START_NOW
 if [[ "$START_NOW" =~ ^[Yy]$ ]]; then
     echo ""
-    print_step "Starting MAX..."
+    print_step "Starting CADET..."
     open http://localhost:8420
     python3 floguru.py api
 else
     echo ""
-    print_info "You can start MAX anytime by double-clicking the desktop shortcut!"
+    print_info "You can start CADET anytime by double-clicking the desktop shortcut!"
     echo ""
     read -p "Press Enter to exit..."
 fi

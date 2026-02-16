@@ -206,10 +206,10 @@ const FloguruLanding = () => {
               Free Forever — No API Keys
             </div>
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Run AI Locally on Your Computer
+              CADET — Autonomous Intelligence
             </h2>
             <p className="text-white/70 mb-2 max-w-2xl mx-auto">
-              Download MAX and run everything locally with Ollama. 
+              Download CADET and run everything locally with Ollama. 
               Your data never leaves your machine. Free forever.
             </p>
             <p className="text-white/40 text-sm max-w-xl mx-auto">
@@ -228,7 +228,7 @@ const FloguruLanding = () => {
                 🪟
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-lg mb-1">Download for Windows</h3>
+                <h3 className="font-bold text-lg mb-1">Cadet for Windows</h3>
                 <p className="text-white/50 text-sm">One-click installer · Auto-installs Ollama · Creates desktop shortcut</p>
               </div>
               <ArrowRight className="h-5 w-5 text-emerald-400 group-hover:translate-x-1 transition-transform" />
@@ -244,7 +244,7 @@ const FloguruLanding = () => {
                 🍎
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-lg mb-1">Download for Mac</h3>
+                <h3 className="font-bold text-lg mb-1">Cadet for Mac</h3>
                 <p className="text-white/50 text-sm">Terminal script · Auto-installs Ollama · Creates app in Applications</p>
               </div>
               <ArrowRight className="h-5 w-5 text-emerald-400 group-hover:translate-x-1 transition-transform" />

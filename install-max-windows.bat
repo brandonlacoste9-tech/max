@@ -6,7 +6,7 @@ cls
 echo.
 echo  ╔══════════════════════════════════════════════════════════════╗
 echo  ║                                                              ║
-echo  ║              🤖 MAX - Your Free AI Assistant                 ║
+echo  ║              🤖 CADET - Autonomous Intelligence              ║
 echo  ║                                                              ║
 echo  ║         No API keys. No subscriptions. 100%% Private.         ║
 echo  ║                                                              ║
@@ -41,7 +41,7 @@ if %FREE_SPACE% LSS 15000000000 (
 echo ✅ Sufficient disk space detected (%FREE_SPACE% bytes free)
 echo.
 
-set "MAX_DIR=%USERPROFILE%\MAX-AI"
+set "MAX_DIR=%USERPROFILE%\Cadet-AI"
 set "OLLAMA_URL=https://ollama.com/download/OllamaSetup.exe"
 
 echo 📁 Creating MAX directory...
@@ -136,50 +136,50 @@ echo.
 
 :: Create desktop shortcut
 echo 🖥️  Creating desktop shortcut...
-powershell -Command "$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%USERPROFILE%\Desktop\MAX AI.lnk'); $Shortcut.TargetPath = '%MAX_DIR%\start-max.bat'; $Shortcut.IconLocation = '%SystemRoot%\System32\shell32.dll,14'; $Shortcut.Save()"
+powershell -Command "$WshShell = New-Object -comObject WScript.Shell; $Shortcut = $WshShell.CreateShortcut('%USERPROFILE%\Desktop\Cadet AI.lnk'); $Shortcut.TargetPath = '%MAX_DIR%\start-cadet.bat'; $Shortcut.IconLocation = '%SystemRoot%\System32\shell32.dll,14'; $Shortcut.Save()"
 
 :: Create the start script
-echo @echo off > "%MAX_DIR%\start-max.bat"
-echo chcp 65001 ^>nul >> "%MAX_DIR%\start-max.bat"
-echo title MAX AI - Running >> "%MAX_DIR%\start-max.bat"
-echo cd /d "%MAX_DIR%" >> "%MAX_DIR%\start-max.bat"
-echo echo Starting MAX AI... >> "%MAX_DIR%\start-max.bat"
-echo echo. >> "%MAX_DIR%\start-max.bat"
-echo echo 🚀 Launching your AI assistant... >> "%MAX_DIR%\start-max.bat"
-echo echo    This window will stay open while MAX is running >> "%MAX_DIR%\start-max.bat"
-echo echo    Close this window to stop MAX >> "%MAX_DIR%\start-max.bat"
-echo echo. >> "%MAX_DIR%\start-max.bat"
-echo start http://localhost:8420 >> "%MAX_DIR%\start-max.bat"
-echo python floguru.py api >> "%MAX_DIR%\start-max.bat"
-echo pause >> "%MAX_DIR%\start-max.bat"
+echo @echo off > "%MAX_DIR%\start-cadet.bat"
+echo chcp 65001 ^>nul >> "%MAX_DIR%\start-cadet.bat"
+echo title CADET - Autonomous Intelligence >> "%MAX_DIR%\start-cadet.bat"
+echo cd /d "%MAX_DIR%" >> "%MAX_DIR%\start-cadet.bat"
+echo echo Starting CADET... >> "%MAX_DIR%\start-cadet.bat"
+echo echo. >> "%MAX_DIR%\start-cadet.bat"
+echo echo 🚀 Launching your AI assistant... >> "%MAX_DIR%\start-cadet.bat"
+echo echo    This window will stay open while CADET is running >> "%MAX_DIR%\start-cadet.bat"
+echo echo    Close this window to stop CADET >> "%MAX_DIR%\start-cadet.bat"
+echo echo. >> "%MAX_DIR%\start-cadet.bat"
+echo start http://localhost:8420 >> "%MAX_DIR%\start-cadet.bat"
+echo python floguru.py api >> "%MAX_DIR%\start-cadet.bat"
+echo pause >> "%MAX_DIR%\start-cadet.bat"
 
 echo.
-echo 🎉 MAX is ready to use!
+echo 🎉 CADET is ready to use!
 echo.
 echo ═══════════════════════════════════════════════════════════════
 echo.
 echo   📍 Installation location: %MAX_DIR%
-echo   🖥️  Desktop shortcut: MAX AI
+echo   🖥️  Desktop shortcut: Cadet AI
 echo   🌐 Web interface: http://localhost:8420
 echo.
-echo   To start MAX in the future:
-echo   • Double-click "MAX AI" on your desktop, OR
-echo   • Run: %MAX_DIR%\start-max.bat
+echo   To start CADET in the future:
+echo   • Double-click "Cadet AI" on your desktop, OR
+echo   • Run: %MAX_DIR%\start-cadet.bat
 echo.
 echo ═══════════════════════════════════════════════════════════════
 echo.
 
-:: Start MAX now?
-echo 🚀 Would you like to start MAX now? (Y/N)
+:: Start CADET now?
+echo 🚀 Would you like to start CADET now? (Y/N)
 set /p START_NOW=
 if /I "%START_NOW%"=="Y" (
     echo.
-    echo Starting MAX...
+    echo Starting CADET...
     start http://localhost:8420
     python floguru.py api
 ) else (
     echo.
-    echo 👍 You can start MAX anytime by double-clicking the desktop shortcut!
+    echo 👍 You can start CADET anytime by double-clicking the desktop shortcut!
 )
 
 echo.
