@@ -193,6 +193,74 @@ const FloguruLanding = () => {
           ))}
         </section>
 
+        {/* Download Section - Local AI Installers */}
+        <motion.section
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-24 rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-emerald-500/10 to-green-500/10 p-12"
+        >
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm mb-4">
+              <span className="text-lg">🦙</span>
+              Free Forever — No API Keys
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              Run AI Locally on Your Computer
+            </h2>
+            <p className="text-white/70 mb-2 max-w-2xl mx-auto">
+              Download MAX and run everything locally with Ollama. 
+              Your data never leaves your machine. Free forever.
+            </p>
+            <p className="text-white/40 text-sm max-w-xl mx-auto">
+              💾 Requires ~15 GB free space · 🧠 8 GB RAM minimum · 🖥️ Windows 10+ or macOS 12+
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {/* Windows Download */}
+            <a
+              href="https://github.com/brandonlacoste9-tech/max/raw/main/install-max-windows.bat"
+              download
+              className="group flex items-center gap-4 p-6 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all"
+            >
+              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                🪟
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg mb-1">Download for Windows</h3>
+                <p className="text-white/50 text-sm">One-click installer · Auto-installs Ollama · Creates desktop shortcut</p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-emerald-400 group-hover:translate-x-1 transition-transform" />
+            </a>
+            
+            {/* Mac Download */}
+            <a
+              href="https://github.com/brandonlacoste9-tech/max/raw/main/install-max-mac.sh"
+              download
+              className="group flex items-center gap-4 p-6 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all"
+            >
+              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                🍎
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg mb-1">Download for Mac</h3>
+                <p className="text-white/50 text-sm">Terminal script · Auto-installs Ollama · Creates app in Applications</p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-emerald-400 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+          
+          <div className="mt-6 text-center">
+            <Link 
+              to="/system-info" 
+              className="inline-flex items-center gap-1 text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
+            >
+              View detailed system requirements →
+            </Link>
+          </div>
+        </motion.section>
+
         {/* CTA strip */}
         <motion.section
           initial={{ opacity: 0 }}
