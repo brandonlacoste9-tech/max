@@ -1,0 +1,47 @@
+# FloGuru Launch - Task YAML
+# Colony Swarm: Planner → Developer → Verifier
+
+name: floguru-launch
+description: Deploy FloGuru Telegram bot and get it live
+version: "1.0"
+
+# The Colony Swarm Roles
+roles:
+  beekeeper: MAX
+  architect: Planner
+  artisan: Developer
+  critic: Verifier
+
+# Task Pipeline
+pipeline:
+  - name: decompose
+    role: architect
+    description: Break down deployment into subtasks
+    output: tasks.yaml
+  
+  - name: configure
+    role: artisan
+    description: Set env vars, enable Telegram gateway
+    requires: [decompose]
+    output: configured
+  
+  - name: verify
+    role: critic
+    description: Test bot responds to /start
+    requires: [configure]
+    output: verified
+
+# Success Criteria
+success:
+  - Telegram bot responds to /start
+  - Bot forwards messages to guru pipeline
+  - Guru responds appropriately
+
+# Memory Integration
+memory:
+  log: true
+  path: .floguru/memory.jsonl
+  track:
+    - deployment_steps
+    - errors
+    - response_times

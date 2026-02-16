@@ -5,6 +5,7 @@ import App from './App';
 import VoyageurLanding from './pages/VoyageurLanding';
 const FloguruLanding = lazy(() => import('./components/floguru/FloguruLanding'));
 const PricingPage = lazy(() => import('./pages/PricingPage'));
+const SystemInfoPage = lazy(() => import('./pages/SystemInfoPage'));
 
 const PageFallback = () => (
   <div className="min-h-screen bg-[#0C0A09] flex items-center justify-center text-[#C9A34F] font-body">
@@ -45,6 +46,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageFallback />}>
             <PricingPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'system-info',
+        element: (
+          <Suspense fallback={<PageFallback />}>
+            <SystemInfoPage />
           </Suspense>
         ),
       },

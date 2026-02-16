@@ -1,0 +1,62 @@
+# FloGuru - Colony Swarm Task Definition
+# Multi-channel AI guru service
+
+name: floguru
+description: Multi-channel customer service guru (Telegram, WhatsApp, Website, SMS, Voice)
+entry: router
+agents:
+  router:
+    role: classify_intent
+    prompt: |
+      Classify incoming user message:
+      1. Detect language (en, fr-CA, es, es-VE, pt-BR)
+      2. Detect intent (billing, technical, sales, general)
+      3. Detect profession context (lawyer, plumber, therapist, coach, advertiser)
+      4. Route to appropriate responder
+      
+  responder:
+    role: answer_in_context
+    prompt: |
+      Answer user based on routing context:
+      1. Use correct language
+      2. Match profession tone
+      3. Be helpful, never pushy
+      4. Escalate if complex
+      
+  escalate:
+    role: handoff_to_human
+    prompt: |
+      Detect when to escalate:
+      1. Complex technical issues
+      2. Billing disputes
+      3. Unclear intent after 2 attempts
+      4. Tag for human review
+      
+  followup:
+    role: ensure_satisfaction
+    prompt: |
+      Post-interaction followup:
+      1. Check if resolved
+      2. Log interaction
+      3. Update user context
+
+# Configuration
+config:
+  channels:
+    - telegram
+    - whatsapp
+    - website
+    - sms
+  languages:
+    - en
+    - fr-CA
+    - es
+    - es-VE
+    - pt-BR
+  professions:
+    - lawyer
+    - plumber
+    - therapist
+    - diet
+    - life_coach
+    - advertiser

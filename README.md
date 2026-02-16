@@ -1,3 +1,27 @@
+# MAX — The Guru on Floguru.com
+
+**MAX** is the AI assistant and guru on Floguru.com. MAX greets visitors in their language and helps them with whatever they need.
+
+### MAX Features
+
+- **Multi-language Greeting** — English, Quebec French, Spanish, Brazilian Portuguese
+- **Adaptive Help** — Lawyer, Plumber, Therapist, Diet/Fitness, Life Coach, Advertiser — anyone
+- **Never Pushy** — Calm, patient, friendly
+- **Never Forget** — Remembers everything about each user
+- **Multi-channel** — WhatsApp, Telegram, Website, SMS, Voice
+- **Voice** — ElevenLabs TTS for speaking
+
+### Greetings
+
+| Language | Greeting |
+|----------|----------|
+| English | "Hello! What may I help you with today?" |
+| Quebec French | "Bonjour! Qu'est-ce que je peux vous aider?" |
+| Spanish | "¡Hola! ¿En qué puedo ayudarte?" |
+| Brazilian Portuguese | "Olá! Em que posso ajudá-lo?" |
+
+---
+
 # MAXIMUS EMPIRE: The Sovereign Stack
 
 **Status:** ACTIVE (Phase 2 — FloGuru Platform)

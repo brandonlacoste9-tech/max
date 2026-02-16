@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
@@ -19,6 +20,10 @@ from floguru_healing.memory import ExecutionMemory
 from floguru_api.routes import tasks, gurus, health, webhooks, human_loop, max as max_routes, browser
 from floguru_api.routes.webhooks import init_gateways
 from floguru_api.middleware.rate_limit import RateLimitMiddleware
+
+
+# Configure CORS - restrict to known origins in production
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "").split(",") if os.getenv("ALLOWED_ORIGINS") else ["http://localhost:3000", "http://localhost:5173"]
 
 
 def create_app() -> FastAPI:
@@ -50,12 +55,13 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # CORS - locked down to specific origins
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=ALLOWED_ORIGINS,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE"],
+        allow_headers=["Authorization", "Content-Type", "X-API-Key"],
     )
     app.add_middleware(RateLimitMiddleware, rpm=60, burst=10)
 

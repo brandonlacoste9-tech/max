@@ -52,8 +52,14 @@ const ONBOARDING_OPTIONS = [
   {
     id: 'local',
     title: 'Run it on my computer',
-    desc: 'Use Ollama to keep everything local.',
+    desc: 'Use Ollama to keep everything local. Free forever.',
     icon: Server,
+    requirements: {
+      storage: '~15 GB free space',
+      ram: '8 GB minimum',
+      os: 'Windows 10/11, macOS, or Linux',
+      note: 'AI models are large files (4-8 GB each)',
+    },
   },
 ];
 
@@ -101,6 +107,9 @@ const PricingPage = () => {
           </Link>
           <Link to="/floguru" className="text-white/60 hover:text-[#C9A34F] transition-colors">
             FloGuru
+          </Link>
+          <Link to="/system-info" className="text-white/60 hover:text-[#C9A34F] transition-colors">
+            System Info
           </Link>
         </div>
       </nav>
@@ -206,6 +215,24 @@ const PricingPage = () => {
                 <p className="text-white/60 text-sm">{opt.desc}</p>
                 {selectedOnboarding === opt.id && (
                   <Check className="w-5 h-5 text-[#C9A34F] mt-4" />
+                )}
+                {/* Show system requirements for local option */}
+                {opt.requirements && selectedOnboarding === opt.id && (
+                  <div className="mt-4 pt-4 border-t border-[#C9A34F]/20">
+                    <p className="text-xs font-semibold text-[#C9A34F] mb-2">System Requirements:</p>
+                    <ul className="text-xs text-white/50 space-y-1">
+                      <li>💾 Storage: {opt.requirements.storage}</li>
+                      <li>🧠 RAM: {opt.requirements.ram}</li>
+                      <li>🖥️ OS: {opt.requirements.os}</li>
+                    </ul>
+                    <p className="text-xs text-white/40 mt-2 italic">{opt.requirements.note}</p>
+                    <Link 
+                      to="/system-info" 
+                      className="inline-flex items-center gap-1 mt-3 text-xs text-[#C9A34F] hover:text-[#d4af5a] transition-colors"
+                    >
+                      View detailed requirements →
+                    </Link>
+                  </div>
                 )}
               </motion.button>
             ))}

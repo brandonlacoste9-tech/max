@@ -13,11 +13,11 @@ router = APIRouter()
 
 
 class TaskCreate(BaseModel):
-    title: str
-    description: str = ""
+    title: str = Field(..., min_length=1, max_length=200)
+    description: str = Field(default="", max_length=2000)
     input_data: dict[str, Any] = Field(default_factory=dict)
-    tags: list[str] = Field(default_factory=list)
-    priority: int = 0
+    tags: list[str] = Field(default_factory=list, max_length=20)
+    priority: int = Field(default=0, ge=0, le=10)
 
 
 @router.post("/tasks")

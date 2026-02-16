@@ -12,6 +12,9 @@ echo  ║         No API keys. No subscriptions. 100%% Private.         ║
 echo  ║                                                              ║
 echo  ╚══════════════════════════════════════════════════════════════╝
 echo.
+echo  📦 Required: ~15 GB free space (AI models are large files)
+echo  💻 Windows 10/11 64-bit required
+echo.
 
 :: Check if running as admin
 net session >nul 2>&1
@@ -21,6 +24,22 @@ if %errorLevel% neq 0 (
     pause
     exit /b 1
 )
+
+:: Check available disk space (15GB = 15,000,000,000 bytes)
+for /f "tokens=3" %%a in ('dir /-c %SystemDrive%\ ^| find "bytes free"') do set "FREE_SPACE=%%a"
+set "FREE_SPACE=%FREE_SPACE:,=%"
+if %FREE_SPACE% LSS 15000000000 (
+    echo ❌ Not enough disk space!
+    echo    Required: ~15 GB free
+    echo    Available: %FREE_SPACE% bytes
+    echo.
+    echo    Please free up some space and try again.
+    pause
+    exit /b 1
+)
+
+echo ✅ Sufficient disk space detected (%FREE_SPACE% bytes free)
+echo.
 
 set "MAX_DIR=%USERPROFILE%\MAX-AI"
 set "OLLAMA_URL=https://ollama.com/download/OllamaSetup.exe"

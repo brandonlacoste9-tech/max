@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import re
 from typing import Any
 
@@ -17,6 +18,9 @@ _TIER_KEYWORDS: dict[GuruTier, list[str]] = {
     GuruTier.WORKER: ["code", "implement", "refactor", "build", "script", "deploy"],
     GuruTier.VISION: ["image", "screenshot", "visual", "photo", "diagram", "ui"],
 }
+
+# Default timeout for guru execution (seconds)
+DEFAULT_TIMEOUT = 60
 
 
 class GuruRouter:
@@ -64,7 +68,7 @@ class GuruRouter:
         candidates = self._gurus.get(tier, [])
         return candidates[0] if candidates else None
 
-    async def route(self, task: Task) -> GuruResult:
+    async def route(self, task: Task, timeout: float = DEFAULT_TIMEOUT) -> GuruResult:
         """Route a task to the appropriate Guru and return the result."""
         tier = self._detect_tier(task)
         guru = self._pick_guru(tier)
@@ -90,7 +94,15 @@ class GuruRouter:
             source="router",
         ))
 
-        result = await guru.execute(task)
+        # Execute with timeout
+        try:
+            result = await asyncio.wait_for(guru.execute(task), timeout=timeout)
+        except asyncio.TimeoutError:
+            result = GuruResult(
+                guru_id=guru.id,
+                task_id=task.id,
+                error=f"Task timed out after {timeout}s",
+            )
 
         if result.success:
             task.mark_completed({"output": result.output})

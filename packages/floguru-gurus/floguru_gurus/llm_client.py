@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import time
 from typing import Any
 
@@ -29,6 +30,7 @@ class LLMClient:
         temperature: float = 0.7,
         max_tokens: int = 4096,
         tools: list[dict[str, Any]] | None = None,
+        api_key: str | None = None,
     ) -> dict[str, Any]:
         """Send a chat completion request and return the parsed response."""
 
@@ -39,13 +41,41 @@ class LLMClient:
             "temperature": temperature,
             "max_tokens": max_tokens,
         }
-        if self.api_base:
+        
+        # User-provided API key takes precedence
+        if api_key:
+            kwargs["api_key"] = api_key
+        elif self.api_base:
             kwargs["api_base"] = self.api_base
+            
         if tools:
             kwargs["tools"] = tools
 
         start = time.monotonic()
-        response = await litellm.acompletion(**kwargs)
+        
+        # Retry logic with error handling
+        last_error = None
+        for attempt in range(self.max_retries + 1):
+            try:
+                response = await litellm.acompletion(**kwargs)
+                break
+            except Exception as e:
+                last_error = e
+                if attempt < self.max_retries:
+                    time.sleep(0.5 * (attempt + 1))  # Exponential backoff
+                continue
+        else:
+            # All retries exhausted
+            return {
+                "content": "",
+                "tool_calls": None,
+                "finish_reason": "error",
+                "tokens_used": 0,
+                "duration_ms": int((time.monotonic() - start) * 1000),
+                "model": model,
+                "error": str(last_error),
+            }
+
         duration_ms = (time.monotonic() - start) * 1000
 
         usage = response.get("usage", {}) or {}

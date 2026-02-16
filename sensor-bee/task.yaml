@@ -1,0 +1,31 @@
+# Sensor Bee - Task Definition
+# Niche scout for Quebec SMBs + micro-SaaS opportunities
+
+name: sensor-bee
+description: Scout for Quebec SMBs + micro-SaaS opportunities
+entry: planner
+agents:
+  planner:
+    role: decompose_scout_task
+    prompt: |
+      Break down the niche scouting mission into steps:
+      1. Define target criteria (Quebec SMBs, no social, Reddit gaps, Product Hunt voids)
+      2. Assign research sources per angle
+      3. Set output format for hot leads
+      
+  developer:
+    role: implement_scout
+    prompt: |
+      Build the scout implementation:
+      1. Research sources: Google Maps Quebec, Reddit (r/Quebec, r/smallbusiness), Product Hunt
+      2. Scrape/filter criteria
+      3. Output: structured leads to revenue/hot_leads.md
+      
+  verifier:
+    role: verify_scout_works
+    prompt: |
+      Verify the scout output:
+      1. Check leads are valid Quebec SMBs
+      2. Confirm no social media presence
+      3. Validate opportunity quality
+      4. Report pass/fail with issues

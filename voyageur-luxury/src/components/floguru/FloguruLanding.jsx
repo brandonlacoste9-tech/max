@@ -91,6 +91,12 @@ const FloguruLanding = () => {
             Pricing
           </Link>
           <Link
+            to="/system-info"
+            className="hover:text-cyan-400 transition-colors duration-200"
+          >
+            System Info
+          </Link>
+          <Link
             to="/pricing"
             className="rounded-lg bg-cyan-500/20 px-4 py-2 text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/30 transition-colors duration-200"
           >

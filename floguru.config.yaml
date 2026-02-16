@@ -7,6 +7,123 @@ platform:
   version: "0.1.0"
   environment: development   # development | staging | production
 
+# ---------- MAX: The Guru ----------
+max:
+  name: MAX
+  role: Guru on Floguru.com
+  greeting:
+    en: "Hello! What may I help you with today?"
+    fr-CA: "Bonjour! Qu'est-ce que je peux vous aider?"
+    es: "¡Hola! ¿En qué puedo ayudarte?"
+    pt-BR: "Olá! Em que posso ajudá-lo?"
+  personality:
+    - Calm
+    - Patient
+    - Helpful
+    - Never pushy
+    - Never noisy
+    - Friendly
+    - Buddy
+    - Friend
+    - Assistant
+  never_forget: true
+  know_everything_about_user: true
+
+# ---------- Supported Languages ----------
+languages:
+  - code: en
+    name: English
+    flag: 🇺🇸
+  - code: fr-CA
+    name: Quebec French
+    flag: 🇨🇦
+  - code: es
+    name: Spanish
+    flag: 🇪🇸
+  - code: es-VE
+    name: Venezuelan Spanish
+    flag: 🇻🇪
+  - code: pt-BR
+    name: Brazilian Portuguese
+    flag: 🇧🇷
+
+# ---------- Professions I Help ----------
+professions:
+  lawyer:
+    name: Lawyer
+    help_with:
+      - Files
+      - Excel
+      - Google Sheets
+      - Emails
+      - Appointments
+      - Legal docs
+  plumber:
+    name: Plumber
+    help_with:
+      - Scheduling
+      - Invoicing
+      - Parts inventory
+      - Customer database
+      - Estimates
+      - Route planning
+  therapist:
+    name: Therapist
+    help_with:
+      - Client notes
+      - Treatment plans
+      - Scheduling
+      - Billing
+      - Resources
+  diet:
+    name: Diet/Fitness
+    help_with:
+      - Meal plans
+      - Exercise logging
+      - Nutrition tracking
+      - Goals
+  life_coach:
+    name: Life Coach
+    help_with:
+      - Goals
+      - Coaching
+      - Planning
+      - Motivation
+  advertiser:
+    name: Advertiser
+    help_with:
+      - Ad copy
+      - Social posts
+      - Flyers
+      - Email marketing
+      - Website text
+      - Reviews
+  # Add more professions as needed
+
+# ---------- Channels ----------
+channels:
+  whatsapp:
+    enabled: false
+    provider: twilio
+  telegram:
+    enabled: true
+  website:
+    enabled: true
+    name: Floguru.com
+  sms:
+    enabled: false
+    provider: twilio
+  voice:
+    enabled: false
+    provider: twilio
+    tts: elevenlabs
+
+# ---------- Voice (ElevenLabs) ----------
+voice:
+  enabled: false
+  elevenlabs:
+    # Token from ELEVENLABS_TOKEN env var
+
 server:
   host: "0.0.0.0"
   port: 8420
@@ -60,7 +177,7 @@ healing:
 # ---------- Chat Gateways ----------
 chat:
   telegram:
-    enabled: false
+    enabled: true
     # Token sourced from TELEGRAM_TOKEN env var
     polling: true
 
