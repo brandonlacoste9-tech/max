@@ -1,11 +1,11 @@
 # MAX — The Guru on Floguru.com
 
-**MAX** is the AI assistant and guru on Floguru.com. MAX greets visitors in their language and helps them with whatever they need.
+**MAX** is the AI assistant and guru on IRONCLAW. MAX greets visitors in their language and helps them with whatever they need.
 
 ### MAX Features
 
 - **Multi-language Greeting** — English, Quebec French, Spanish, Brazilian Portuguese
-- **Adaptive Help** — Lawyer, Plumber, Therapist, Diet/Fitness, Life Coach, Advertiser — anyone
+- **Adaptive Help** —for anything Lawyer, Plumber, Therapist, Diet/Fitness, Life Coach, Advertiser — anyone
 - **Never Pushy** — Calm, patient, friendly
 - **Never Forget** — Remembers everything about each user
 - **Multi-channel** — WhatsApp, Telegram, Website, SMS, Voice
@@ -24,15 +24,15 @@
 
 # MAXIMUS EMPIRE: The Sovereign Stack
 
-**Status:** ACTIVE (Phase 2 — FloGuru Platform)
+**Status:** ACTIVE (Phase 2 — Platform)
 **Brain:** Gemini 2.5 Pro (Cloud) + Ollama Bridge (Local) + DeepSeek R1 (Reasoning)
-**Interface:** FloGuru.com (Web) + OpenClaw (WhatsApp) + Telegram + Discord
+**Interface:** (Web) + OpenClaw (WhatsApp) + Telegram + Discord
 
 ---
 
-## FloGuru — AI-Powered Automation Platform
+## ironclaw — AI-Powered Automation Platform
 
-FloGuru is the modular automation core of the Maximus Empire. It provides specialised AI "Guru" agents that handle reasoning, code generation, browser automation, and multi-channel chat — all wired together with a self-improving HyperHealing engine.
+MAX is the modular automation core of the Maximus Empire. It provides specialised AI "Guru" agents that handle reasoning, code generation, browser automation, and multi-channel chat — all wired together with a self-improving HyperHealing engine.
 
 ### Core Features
 
